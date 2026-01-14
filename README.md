@@ -1,33 +1,31 @@
-# Orbit: Structured Agentic Engineering Guide
+# Project Cosmos: Agentic Engineering Guide 🌌
 
-Welcome to **Project Orbit**. This repository is your training ground to experience **Structured Agentic Engineering**.
+Welcome to **Project Cosmos**.
+This repository is a structured training ground for **Agentic Engineering** (Working effectively with AI Agents).
 
-**The Mission**: Build a production-ready **AI Task Orchestration Platform** (Orbit) using React, Node.js, and Redis.
-**Time Commitment**: ~2 Hours ⏱️
+**The Mission**: Build a "Second Brain" Knowledge Graph Application using React, Node.js, and Agentic Workflows.
 
-**The Real Goal**: Learn **Atomic Git Workflows**, **Context Management**, and **Verification Loops** to build complex software systematically.
+## 📂 Project Structure
+This repository is organized to support a multi-device, professional workflow:
+
+*   **`orbit_app/`**: The Application Source Code.
+    *   `client/`: React + Vite Frontend (Force Graph).
+    *   `server/`: Node.js Backend (Markdown Parser).
+    *   `notes/`: The raw data for your graph.
+*   **`guide/`**: The Mission Control Dashboard (Interactive Instructions).
+*   **`.agent/`**: Brain files for the AI (Context & Workflows).
 
 ## 🚀 How to Start
-
-This guide is **Interactive**. You will run a local "Mission Control" dashboard that guides you through the phases:
-1.  **The Architect** (Planning & Context)
-2.  **The Engineer** (Backend & Queues)
-3.  **The Frontend Specialist** (Dashboard & WebSockets)
-4.  **The Verifier** (Security & Audit)
-
-### Prerequisites
-- Node.js installed (v18+)
-- (Optional) Redis (or you can use mocks)
-
-### Launch Mission Control
-1.  Open your terminal in this directory.
-2.  Run the guide server:
+1.  **Launch Mission Control**:
     ```bash
     node guide/server.js
     ```
-3.  Open **http://localhost:3333** in your browser.
-4.  Follow the instructions on the dashboard and **Verify** your progress in real-time!
+2.  Open **http://localhost:3333** in your browser.
+3.  Follow the **Level 1 (Builder)** instructions to construct the app.
+4.  Proceed to **Level 2 (Operator)** to stress-test your Agent skills.
 
-> **Tip**: You can also use the slash command `/verify` in the IDE chat if you have set up the workflow.
+## 🔄 Workflow
+*   **Syncing Work**: Use the slash command `/sync` (or `git commit`) to save progress.
+*   **Resuming Work**: Pull the repo, start the server, and tell the Agent to read `.agent/context.md`.
 
-Happy Building! 🌌
+Happy Building! 🚀

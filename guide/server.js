@@ -17,19 +17,19 @@ const CHECKS = {
     'phase1': [
         {
             id: 'shell',
-            label: 'React Shell (client/package.json)',
-            check: () => checkFileExists('client/package.json')
+            label: 'React Shell (orbit_app/client/package.json)',
+            check: () => checkFileExists('orbit_app/client/package.json')
         },
         {
             id: 'datalayer',
-            label: 'Data Layer (server/index.js)',
-            check: () => checkFileExists('server/index.js')
+            label: 'Data Layer (orbit_app/server/index.js)',
+            check: () => checkFileExists('orbit_app/server/index.js')
         },
         {
             id: 'graphlib',
             label: 'Graph Library Installed',
             check: () => {
-                const pkgPath = path.join(ROOT_DIR, 'client/package.json');
+                const pkgPath = path.join(ROOT_DIR, 'orbit_app/client/package.json');
                 if (!fs.existsSync(pkgPath)) return false;
                 try {
                     const pkg = JSON.parse(fs.readFileSync(pkgPath, 'utf8'));
@@ -41,7 +41,7 @@ const CHECKS = {
             id: 'pivot',
             label: 'The Pivot (Graph in App.jsx)',
             check: () => {
-                const appPath = path.join(ROOT_DIR, 'client/src/App.jsx');
+                const appPath = path.join(ROOT_DIR, 'orbit_app/client/src/App.jsx');
                 if (!fs.existsSync(appPath)) return false;
                 const content = fs.readFileSync(appPath, 'utf8');
                 return content.includes('ForceGraph');

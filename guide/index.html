@@ -297,7 +297,8 @@
                         <button class="copy-btn"
                             onclick="copyToClipboard(this.parentElement.querySelector('pre').innerText, this)">Copy</button>
                         <strong>🤖 Prompt:</strong>
-                        <pre>Create a Vite React app named `client` in the root.
+                        <pre>cd orbit_app
+Create a Vite React app named `client`.
 Install dependencies with `npm install`.</pre>
                     </div>
                 </div>
@@ -305,7 +306,7 @@ Install dependencies with `npm install`.</pre>
 
             <div class="verify-block">
                 <h4>🔍 Verify It Yourself:</h4>
-                <p>Run <code>ls client/package.json</code> to confirm the project exists.</p>
+                <p>Run <code>ls orbit_app/client/package.json</code> to confirm the project exists.</p>
             </div>
             <div class="step-bridge">
                 <span>✅ <strong>Accomplished:</strong> Created the React Shell.</span>
@@ -324,9 +325,10 @@ Install dependencies with `npm install`.</pre>
                     <button class="tab-btn" onclick="switchTab(this, 's2-agent')">AI Agent</button>
                 </div>
                 <div id="s2-manual" class="tab-content active">
-                    <p>1. Create <code>server/</code> folder. Run <code>npm init -y</code>.<br>
+                    <p>1. Create <code>orbit_app/server/</code> folder. Run <code>npm init -y</code>.<br>
                         2. Install: <code>npm install express cors gray-matter glob</code><br>
-                        3. Create <code>server/index.js</code> that scans a <code>../notes</code> folder and returns
+                        3. Create <code>orbit_app/server/index.js</code> that scans a <code>../notes</code> folder and
+                        returns
                         JSON.</p>
                 </div>
                 <div id="s2-agent" class="tab-content">
@@ -334,7 +336,7 @@ Install dependencies with `npm install`.</pre>
                         <button class="copy-btn"
                             onclick="copyToClipboard(this.parentElement.querySelector('pre').innerText, this)">Copy</button>
                         <strong>🤖 Prompt:</strong>
-                        <pre>Create a `server` directory with an Express app.
+                        <pre>Create a `orbit_app/server` directory with an Express app.
 Install `gray-matter` and `glob`.
 Create an endpoint GET /notes that:
 1. Scans all .md files in `../notes`
@@ -346,7 +348,7 @@ Create an endpoint GET /notes that:
 
             <div class="verify-block">
                 <h4>🔍 Verify It Yourself:</h4>
-                <p>Create a `notes/hello.md` file. Run `node server/index.js`. <br>Then `curl
+                <p>Create a `orbit_app/notes/hello.md` file. Run `node orbit_app/server/index.js`. <br>Then `curl
                     http://localhost:3000/notes`.</p>
             </div>
             <div class="step-bridge">
@@ -368,7 +370,8 @@ Create an endpoint GET /notes that:
                 <div id="s3-manual" class="tab-content active">
                     <p><strong>Part A: List View</strong><br>
                         Create <code>App.jsx</code> that fetches <code>/notes</code> and renders a
-                        <code>&lt;ul&gt;</code> list.</p>
+                        <code>&lt;ul&gt;</code> list.
+                    </p>
                     <hr style="border-color:#334155; margin:15px 0;">
                     <p><strong>Part B: The Pivot</strong><br>
                         Install <code>npm install react-force-graph-2d</code> in client.<br>
@@ -394,8 +397,8 @@ Links should be derived from wikilinks [[Like This]] in the content.</pre>
 
             <div class="verify-block">
                 <h4>🔍 Verify It Yourself:</h4>
-                <p>Check `client/package.json` for `react-force-graph-2d`. Open `App.jsx` and see if `<ForceGraph` is
-                        present.</p>
+                <p>Check `orbit_app/client/package.json` for `react-force-graph-2d`. Open `orbit_app/client/src/App.jsx`
+                    and see if `<ForceGraph` is present.</p>
             </div>
             <div class="step-bridge">
                 <span>✅ <strong>Accomplished:</strong> Pivoted to a Knowledge Graph.</span>
