@@ -216,13 +216,27 @@
             color: #f8fafc;
         }
 
+        .phase-content h3 {
+            margin-top: 40px;
+            margin-bottom: 15px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            padding-top: 30px;
+        }
+
+        .phase-content h3:first-of-type {
+            margin-top: 0;
+            border-top: none;
+            padding-top: 0;
+        }
+
         /* Tabs */
         .tab-container {
-            margin-top: 15px;
+            margin-top: 20px;
             background: #1e293b;
             border: 1px solid #334155;
             border-radius: 8px;
             overflow: hidden;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
         }
 
         .tab-header {
@@ -232,15 +246,22 @@
         }
 
         .tab-btn {
-            padding: 10px 20px;
+            flex: 1;
+            /* Make tabs fill the width 50/50 */
+            padding: 12px 20px;
             background: transparent;
             border: none;
             color: #94a3b8;
             cursor: pointer;
-            font-size: 0.9em;
-            font-weight: bold;
+            font-size: 0.95em;
+            font-weight: 600;
             transition: all 0.2s;
             border-right: 1px solid #334155;
+            text-align: center;
+        }
+
+        .tab-btn:last-child {
+            border-right: none;
         }
 
         .tab-btn:hover {
@@ -255,7 +276,7 @@
         }
 
         .tab-content {
-            padding: 20px;
+            padding: 25px;
             display: none;
         }
 
@@ -263,28 +284,34 @@
             display: block;
         }
 
-        /* Copy Button */
-        .copy-wrapper {
-            position: relative;
+        /* Prompt Header and Copy Button */
+        .prompt-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 8px;
         }
 
         .copy-btn {
-            position: absolute;
-            top: 10px;
-            right: 10px;
             background: rgba(255, 255, 255, 0.1);
             border: 1px solid rgba(255, 255, 255, 0.2);
             color: #fff;
-            padding: 4px 8px;
+            padding: 4px 10px;
             border-radius: 4px;
-            font-size: 0.8em;
+            font-size: 0.75em;
             cursor: pointer;
-            z-index: 10;
+            transition: all 0.2s;
         }
 
         .copy-btn:hover {
             background: var(--accent);
             color: #000;
+        }
+
+        /* Adjust pre inside prompt hint to have no extra margin since header handles it */
+        .prompt-hint pre {
+            margin-top: 0;
+            border: 1px solid rgba(56, 189, 248, 0.3);
         }
     </style>
 </head>
@@ -378,11 +405,13 @@ Orbit is a dashboard for visualizing long-running background tasks.
 
                 <div id="p1s2-agent" class="tab-content">
                     <div class="prompt-hint">
-                        <strong>🤖 Agent Prompt:</strong>
-                        <div class="copy-wrapper">
+                        <div class="prompt-header">
+                            <strong>🤖 Agent Prompt:</strong>
                             <button class="copy-btn"
-                                onclick="copyToClipboard(this.nextElementSibling.innerText, this)">Copy Prompt</button>
-                            <pre>Create `PRD.md` with the following content:
+                                onclick="copyToClipboard(this.closest('.prompt-hint').querySelector('pre').innerText, this)">Copy
+                                Prompt</button>
+                        </div>
+                        <pre>Create `PRD.md` with the following content:
 
 ```markdown
 # Product Requirements Document: Orbit
@@ -395,7 +424,6 @@ Orbit is a dashboard for visualizing long-running background tasks.
 ```
 
 Commit with message 'docs: add initial PRD'.</pre>
-                        </div>
                     </div>
                 </div>
             </div>
@@ -422,11 +450,13 @@ Commit with message 'docs: add initial PRD'.</pre>
 
                 <div id="p1s3-agent" class="tab-content">
                     <div class="prompt-hint">
-                        <strong>🤖 Agent Prompt:</strong>
-                        <div class="copy-wrapper">
+                        <div class="prompt-header">
+                            <strong>🤖 Agent Prompt:</strong>
                             <button class="copy-btn"
-                                onclick="copyToClipboard(this.nextElementSibling.innerText, this)">Copy Prompt</button>
-                            <pre>Create a directory `.agent/active_context` and a file inside it named `roles.md` with the following content:
+                                onclick="copyToClipboard(this.closest('.prompt-hint').querySelector('pre').innerText, this)">Copy
+                                Prompt</button>
+                        </div>
+                        <pre>Create a directory `.agent/active_context` and a file inside it named `roles.md` with the following content:
 
 ```markdown
 # Roles
@@ -436,7 +466,6 @@ Commit with message 'docs: add initial PRD'.</pre>
 ```
 
 Commit with message 'docs: define agent roles'.</pre>
-                        </div>
                     </div>
                 </div>
             </div>
@@ -480,14 +509,18 @@ Commit with message 'docs: define agent roles'.</pre>
 
                 <div id="p2s1-agent" class="tab-content">
                     <div class="prompt-hint">
-                        <span
-                            style="background:#f59e0b; color:#000; padding:2px 6px; border-radius:4px; font-size:0.8em; margin-right:5px; font-weight:bold;">⏳
-                            Long Task</span>
-                        <strong>🤖 Agent Prompt:</strong>
-                        <div class="copy-wrapper">
+                        <div class="prompt-header">
+                            <div>
+                                <span
+                                    style="background:#f59e0b; color:#000; padding:2px 6px; border-radius:4px; font-size:0.8em; margin-right:5px; font-weight:bold;">⏳
+                                    Long Task</span>
+                                <strong>🤖 Agent Prompt:</strong>
+                            </div>
                             <button class="copy-btn"
-                                onclick="copyToClipboard(this.nextElementSibling.innerText, this)">Copy Prompt</button>
-                            <pre>Create a `server` directory. Initialize Node.js (npm init -y) and install the following dependencies:
+                                onclick="copyToClipboard(this.closest('.prompt-hint').querySelector('pre').innerText, this)">Copy
+                                Prompt</button>
+                        </div>
+                        <pre>Create a `server` directory. Initialize Node.js (npm init -y) and install the following dependencies:
 - express
 - bullmq
 - cors
@@ -495,7 +528,6 @@ Commit with message 'docs: define agent roles'.</pre>
 - redis
 
 Commit with message 'chore: init server'.</pre>
-                        </div>
                     </div>
                 </div>
             </div>
@@ -518,11 +550,13 @@ Commit with message 'chore: init server'.</pre>
 
                 <div id="p2s2-agent" class="tab-content">
                     <div class="prompt-hint">
-                        <strong>🤖 Agent Prompt:</strong>
-                        <div class="copy-wrapper">
+                        <div class="prompt-header">
+                            <strong>🤖 Agent Prompt:</strong>
                             <button class="copy-btn"
-                                onclick="copyToClipboard(this.nextElementSibling.innerText, this)">Copy Prompt</button>
-                            <pre>Act as Backend Engineer. Read the `PRD.md` file.
+                                onclick="copyToClipboard(this.closest('.prompt-hint').querySelector('pre').innerText, this)">Copy
+                                Prompt</button>
+                        </div>
+                        <pre>Act as Backend Engineer. Read the `PRD.md` file.
 
 Create `server/index.js` with Step 1:
 - Setup Express app with CORS and JSON parsing.
@@ -530,7 +564,6 @@ Create `server/index.js` with Step 1:
 - Create a POST /tasks endpoint that accepts { type, payload } and adds it to the queue.
 
 Commit with message 'feat: add task api'.</pre>
-                        </div>
                     </div>
                 </div>
             </div>
@@ -553,17 +586,18 @@ Commit with message 'feat: add task api'.</pre>
 
                 <div id="p2s3-agent" class="tab-content">
                     <div class="prompt-hint">
-                        <strong>🤖 Agent Prompt:</strong>
-                        <div class="copy-wrapper">
+                        <div class="prompt-header">
+                            <strong>🤖 Agent Prompt:</strong>
                             <button class="copy-btn"
-                                onclick="copyToClipboard(this.nextElementSibling.innerText, this)">Copy Prompt</button>
-                            <pre>Create `server/worker.js` that:
+                                onclick="copyToClipboard(this.closest('.prompt-hint').querySelector('pre').innerText, this)">Copy
+                                Prompt</button>
+                        </div>
+                        <pre>Create `server/worker.js` that:
 1. Connects to 'orbit-tasks' BullMQ queue.
 2. Processes jobs by logging "Processing..." and running a setTimeout for 5 seconds (simulated work).
 3. Logs "Job Completed" when done.
 
 Commit with message 'feat: add worker'.</pre>
-                        </div>
                     </div>
                 </div>
             </div>
@@ -605,18 +639,21 @@ cd client && npm install</pre>
 
                 <div id="p3s1-agent" class="tab-content">
                     <div class="prompt-hint">
-                        <span
-                            style="background:#f59e0b; color:#000; padding:2px 6px; border-radius:4px; font-size:0.8em; margin-right:5px; font-weight:bold;">⏳
-                            Long Task</span>
-                        <strong>🤖 Agent Prompt:</strong>
-                        <div class="copy-wrapper">
+                        <div class="prompt-header">
+                            <div>
+                                <span
+                                    style="background:#f59e0b; color:#000; padding:2px 6px; border-radius:4px; font-size:0.8em; margin-right:5px; font-weight:bold;">⏳
+                                    Long Task</span>
+                                <strong>🤖 Agent Prompt:</strong>
+                            </div>
                             <button class="copy-btn"
-                                onclick="copyToClipboard(this.nextElementSibling.innerText, this)">Copy Prompt</button>
-                            <pre>Create a Vite React app named `client` in the root directory.
+                                onclick="copyToClipboard(this.closest('.prompt-hint').querySelector('pre').innerText, this)">Copy
+                                Prompt</button>
+                        </div>
+                        <pre>Create a Vite React app named `client` in the root directory.
 Install the dependencies by running `npm install`.
 
 Commit with message 'chore: init frontend'.</pre>
-                        </div>
                     </div>
                 </div>
             </div>
@@ -639,17 +676,18 @@ Commit with message 'chore: init frontend'.</pre>
 
                 <div id="p3s2-agent" class="tab-content">
                     <div class="prompt-hint">
-                        <strong>🤖 Agent Prompt:</strong>
-                        <div class="copy-wrapper">
+                        <div class="prompt-header">
+                            <strong>🤖 Agent Prompt:</strong>
                             <button class="copy-btn"
-                                onclick="copyToClipboard(this.nextElementSibling.innerText, this)">Copy Prompt</button>
-                            <pre>Act as Frontend Specialist.
+                                onclick="copyToClipboard(this.closest('.prompt-hint').querySelector('pre').innerText, this)">Copy
+                                Prompt</button>
+                        </div>
+                        <pre>Act as Frontend Specialist.
 In `client/src/App.jsx`, implement a Dashboard that:
 1. Has a "Start Mission" button that sends a POST request to `http://localhost:3000/tasks`.
 2. Displays the list of returned tasks (mocked or real).
 
 Commit with message 'feat: dashboard UI'.</pre>
-                        </div>
                     </div>
                 </div>
             </div>
@@ -689,14 +727,15 @@ Commit with message 'feat: dashboard UI'.</pre>
 
                 <div id="p4s1-agent" class="tab-content">
                     <div class="prompt-hint">
-                        <strong>🤖 Agent Prompt:</strong>
-                        <div class="copy-wrapper">
+                        <div class="prompt-header">
+                            <strong>🤖 Agent Prompt:</strong>
                             <button class="copy-btn"
-                                onclick="copyToClipboard(this.nextElementSibling.innerText, this)">Copy Prompt</button>
-                            <pre>Run `npm audit` in the `server` directory.
+                                onclick="copyToClipboard(this.closest('.prompt-hint').querySelector('pre').innerText, this)">Copy
+                                Prompt</button>
+                        </div>
+                        <pre>Run `npm audit` in the `server` directory.
 If any critical vulnerabilities are found, document them in a new file named `SECURITY.md`.
 If none are found, create `SECURITY.md` stating "No critical vulnerabilities found".</pre>
-                        </div>
                     </div>
                 </div>
             </div>
@@ -717,13 +756,14 @@ If none are found, create `SECURITY.md` stating "No critical vulnerabilities fou
 
                 <div id="p4s2-agent" class="tab-content">
                     <div class="prompt-hint">
-                        <strong>🤖 Agent Prompt:</strong>
-                        <div class="copy-wrapper">
+                        <div class="prompt-header">
+                            <strong>🤖 Agent Prompt:</strong>
                             <button class="copy-btn"
-                                onclick="copyToClipboard(this.nextElementSibling.innerText, this)">Copy Prompt</button>
-                            <pre>Create a `CHANGELOG.md` file in the root.
-Add an initial entry for "v0.1.0 - Initial Release" utilizing the dates and changes from the git history.</pre>
+                                onclick="copyToClipboard(this.closest('.prompt-hint').querySelector('pre').innerText, this)">Copy
+                                Prompt</button>
                         </div>
+                        <pre>Create a `CHANGELOG.md` file in the root.
+Add an initial entry for "v0.1.0 - Initial Release" utilizing the dates and changes from the git history.</pre>
                     </div>
                 </div>
             </div>
