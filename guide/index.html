@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Project Orbit: Mission Control</title>
+    <style>
+        :root {
+            --bg: #0f172a;
+            --card: #1e293b;
+            --text: #e2e8f0;
+            --accent: #38bdf8;
+            --success: #22c55e;
+            --error: #ef4444;
+        }
+        body {
+            font-family: 'Inter', system-ui, sans-serif;
+            background-color: var(--bg);
+            color: var(--text);
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 40px 20px;
+            line-height: 1.6;
+        }
+        h1, h2 { color: var(--accent); }
+        .hero {
+            text-align: center;
+            margin-bottom: 50px;
+            padding: 40px;
+            background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
+            border-radius: 12px;
+            border: 1px solid #334155;
+        }
+        .phase-card {
+            background-color: var(--card);
+            padding: 24px;
+            border-radius: 12px;
+            margin-bottom: 24px;
+            border: 1px solid #334155;
+        }
+        .task-list {
+            list-style: none;
+            padding: 0;
+        }
+        .task-item {
+            display: flex;
+            align-items: center;
+            margin-bottom: 12px;
+            padding: 12px;
+            background: #0f172a;
+            border-radius: 8px;
+        }
+        .status-icon {
+            width: 24px;
+            height: 24px;
+            margin-right: 12px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+        }
+        .status-pending { background: #334155; color: #94a3b8; }
+        .status-pass { background: rgba(34, 197, 94, 0.2); color: var(--success); border: 1px solid var(--success); }
+        .status-fail { background: rgba(239, 68, 68, 0.2); color: var(--error); border: 1px solid var(--error); }
+        
+        button {
+            background: var(--accent);
+            color: #000;
+            border: none;
+            padding: 12px 24px;
+            font-size: 16px;
+            font-weight: bold;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: opacity 0.2s;
+        }
+        button:hover { opacity: 0.9; }
+        code {
+            background: #334155;
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-family: monospace;
+            color: #fca5a5;
+        }
+        .hidden { display: none; }
+    </style>
+</head>
+<body>
+
+    <div class="hero">
+        <h1>🚀 Project Orbit: Mission Control</h1>
+        <p>Welcome, Agent. Your mission is to build the ultimate AI Task Orchestrator.</p>
+        <p>Use this dashboard to track your progress as you master the Antigravity IDE.</p>
+        <br>
+        <button onclick="verifyAll()">📡 Scan Project Status</button>
+    </div>
+
+    <div class="phase-card">
+        <h2>Phase 1: The Architect</h2>
+        <p>Define the system requirements and agent roles.</p>
+        <ul class="task-list" id="phase1-list"></ul>
+    </div>
+
+    <div class="phase-card">
+        <h2>Phase 2: The Engineer</h2>
+        <p>Build the Backend API and Worker Service.</p>
+        <ul class="task-list" id="phase2-list"></ul>
+    </div>
+
+    <div class="phase-card">
+        <h2>Phase 3: The Frontend Specialist</h2>
+        <p>Create the React Dashboard.</p>
+        <ul class="task-list" id="phase3-list"></ul>
+    </div>
+
+    <div class="phase-card">
+        <h2>Phase 4: Security & Quality</h2>
+        <p>Audit and Document.</p>
+        <ul class="task-list" id="phase4-list"></ul>
+    </div>
+
+    <script>
+        async function verifyAll() {
+            try {
+                const res = await fetch('/api/verify');
+                const data = await res.json();
+                
+                renderPhase('phase1', data.phase1);
+                renderPhase('phase2', data.phase2);
+                renderPhase('phase3', data.phase3);
+                renderPhase('phase4', data.phase4);
+            } catch (e) {
+                alert("Could not connect to Mission Control. Make sure 'node guide/server.js' is running!");
+            }
+        }
+
+        function renderPhase(id, items) {
+            const container = document.getElementById(`${id}-list`);
+            container.innerHTML = '';
+            
+            let allPassed = true;
+
+            items.forEach(item => {
+                const li = document.createElement('li');
+                li.className = 'task-item';
+                
+                const icon = document.createElement('div');
+                icon.className = `status-icon ${item.passed ? 'status-pass' : 'status-fail'}`;
+                icon.innerHTML = item.passed ? '✓' : '✗';
+                
+                const text = document.createElement('span');
+                text.innerText = item.label;
+                
+                li.appendChild(icon);
+                li.appendChild(text);
+                container.appendChild(li);
+
+                if (!item.passed) allPassed = false;
+            });
+        }
+
+        // Initial render (placeholders)
+        window.onload = verifyAll;
+    </script>
+</body>
+</html>

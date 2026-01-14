@@ -11,6 +11,29 @@ This project simulates a real-world complex engineering task to help you master 
 > node verify_orbit.js
 > ```
 
+## System Architecture
+
+Before you build, visualize what you are creating:
+
+```mermaid
+graph TD
+    subgraph "Frontend"
+        Dashboard[React Dashboard]
+        WS_Client[WebSocket Client]
+    end
+    
+    subgraph "Backend"
+        API[Express API]
+        Worker[Worker Process]
+    end
+    
+    Dashboard -->|POST /tasks| API
+    API -->|Queue| Redis[(Redis)]
+    Worker -->|Process| Redis
+    Redis -->|Updates| API
+    API -->|WS Push| WS_Client
+```
+
 ---
 
 ## Phase 1: The Architect (Planning)
@@ -50,7 +73,7 @@ This project simulates a real-world complex engineering task to help you master 
       - **Backend Engineer**: Focus on Node.js, Redis, and APIs.
       ```
 
-> **Checkpoint**: Run `node verify_orbit.js` to see if you passed Phase 1!
+> **Checkpoint**: Check your **Mission Control Dashboard** to see if Phase 1 turns Green!
 
 ---
 
@@ -73,7 +96,7 @@ This project simulates a real-world complex engineering task to help you master 
     - **Simulation**: Make the process function sleep for 5 seconds to simulate "AI Work".
     - `console.log` when a job starts and finishes.
 
-> **Checkpoint**: Run `node verify_orbit.js` again!
+> **Checkpoint**: Check Mision Control!
 
 ---
 
@@ -90,7 +113,7 @@ This project simulates a real-world complex engineering task to help you master 
     - Create a button "Start Mission" that calls `POST http://localhost:3000/tasks`.
     - Display a list of active tasks.
 
-> **Checkpoint**: `node verify_orbit.js`
+> **Checkpoint**: Check Mission Control!
 
 ---
 
@@ -108,4 +131,4 @@ This project simulates a real-world complex engineering task to help you master 
 
 ## Final Verification
 
-If you see all green checks, congratulations! You have mastered the basics of the Antigravity IDE workflow.
+If you see all green checks on your Dashboard, congratulations! You have mastered the basics of the Antigravity IDE workflow.
