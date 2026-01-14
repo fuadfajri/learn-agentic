@@ -215,6 +215,77 @@
         .concept strong {
             color: #f8fafc;
         }
+
+        /* Tabs */
+        .tab-container {
+            margin-top: 15px;
+            background: #1e293b;
+            border: 1px solid #334155;
+            border-radius: 8px;
+            overflow: hidden;
+        }
+
+        .tab-header {
+            display: flex;
+            background: #0f172a;
+            border-bottom: 1px solid #334155;
+        }
+
+        .tab-btn {
+            padding: 10px 20px;
+            background: transparent;
+            border: none;
+            color: #94a3b8;
+            cursor: pointer;
+            font-size: 0.9em;
+            font-weight: bold;
+            transition: all 0.2s;
+            border-right: 1px solid #334155;
+        }
+
+        .tab-btn:hover {
+            color: var(--text);
+            background: rgba(255, 255, 255, 0.05);
+        }
+
+        .tab-btn.active {
+            color: var(--accent);
+            background: #1e293b;
+            border-bottom: 2px solid var(--accent);
+        }
+
+        .tab-content {
+            padding: 20px;
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        /* Copy Button */
+        .copy-wrapper {
+            position: relative;
+        }
+
+        .copy-btn {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            color: #fff;
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 0.8em;
+            cursor: pointer;
+            z-index: 10;
+        }
+
+        .copy-btn:hover {
+            background: var(--accent);
+            color: #000;
+        }
     </style>
 </head>
 
@@ -284,33 +355,91 @@
             <div class="concept"><strong>Concept: Context is King.</strong> Agents don't guess; they read. A PRD
                 (Product Requirements Document) is the single source of truth that aligns the Agent's output with your
                 intent.</div>
-            <p>Create a file <code>PRD.md</code> in the root.</p>
 
-            <details open>
-                <summary>📄 <strong>Click to Copy PRD Content</strong></summary>
-                <pre style="user-select: all;"># Product Requirements Document: Orbit
+            <div class="tab-container">
+                <div class="tab-header">
+                    <button class="tab-btn active" onclick="switchTab(this, 'p1s2-manual')">My Hand (Manual)</button>
+                    <button class="tab-btn" onclick="switchTab(this, 'p1s2-agent')">AI Agent (Automated)</button>
+                </div>
+
+                <div id="p1s2-manual" class="tab-content active">
+                    <p>Create a file <code>PRD.md</code> in the root.</p>
+                    <details open>
+                        <summary>📄 <strong>Click to Copy PRD Content</strong></summary>
+                        <pre style="user-select: all;"># Product Requirements Document: Orbit
 ## Overview
 Orbit is a dashboard for visualizing long-running background tasks.
 ## Features
 - **Task Submission**: POST /api/tasks (Type: Research, Analysis)
 - **Worker Queue**: Redis-backed queue for asynchronous processing.
 - **Real-time Status**: WebSocket updates for task progress.</pre>
-            </details>
+                    </details>
+                </div>
 
-            <div class="prompt-hint">🤖 <strong>Agent Prompt:</strong> "Create <code>PRD.md</code> with this content:
-                [PASTE CONTENT HERE]. Commit with message 'docs: add initial PRD'."</div>
+                <div id="p1s2-agent" class="tab-content">
+                    <div class="prompt-hint">
+                        <strong>🤖 Agent Prompt:</strong>
+                        <div class="copy-wrapper">
+                            <button class="copy-btn"
+                                onclick="copyToClipboard(this.nextElementSibling.innerText, this)">Copy Prompt</button>
+                            <pre>Create `PRD.md` with the following content:
+
+```markdown
+# Product Requirements Document: Orbit
+## Overview
+Orbit is a dashboard for visualizing long-running background tasks.
+## Features
+- **Task Submission**: POST /api/tasks (Type: Research, Analysis)
+- **Worker Queue**: Redis-backed queue for asynchronous processing.
+- **Real-time Status**: WebSocket updates for task progress.
+```
+
+Commit with message 'docs: add initial PRD'.</pre>
+                        </div>
+                    </div>
+                </div>
+            </div>
 
             <h3>Step 3: Define Roles</h3>
             <div class="concept"><strong>Concept: The Persona Pattern.</strong> Assigning a specific role (e.g., 'Senior
                 Architect') primes the LLM to access specific knowledge domains and adopt a professional tone.</div>
-            <p>Create a directory <code>.agent/active_context</code> and a file inside it named <code>roles.md</code>:
-            </p>
-            <pre># Roles
+
+            <div class="tab-container">
+                <div class="tab-header">
+                    <button class="tab-btn active" onclick="switchTab(this, 'p1s3-manual')">My Hand (Manual)</button>
+                    <button class="tab-btn" onclick="switchTab(this, 'p1s3-agent')">AI Agent (Automated)</button>
+                </div>
+
+                <div id="p1s3-manual" class="tab-content active">
+                    <p>Create a directory <code>.agent/active_context</code> and a file inside it named
+                        <code>roles.md</code>:
+                    </p>
+                    <pre># Roles
 - **Architect**: Responsible for system design and PRDs.
 - **Frontend Specialist**: Focus on React, Tailwind, and UX.
 - **Backend Engineer**: Focus on Node.js, Redis, and APIs.</pre>
-            <div class="prompt-hint">🤖 <strong>Agent Prompt:</strong> "Create `.agent/active_context/roles.md` with the
-                content (above). Commit with message 'docs: define agent roles'."</div>
+                </div>
+
+                <div id="p1s3-agent" class="tab-content">
+                    <div class="prompt-hint">
+                        <strong>🤖 Agent Prompt:</strong>
+                        <div class="copy-wrapper">
+                            <button class="copy-btn"
+                                onclick="copyToClipboard(this.nextElementSibling.innerText, this)">Copy Prompt</button>
+                            <pre>Create a directory `.agent/active_context` and a file inside it named `roles.md` with the following content:
+
+```markdown
+# Roles
+- **Architect**: Responsible for system design and PRDs.
+- **Frontend Specialist**: Focus on React, Tailwind, and UX.
+- **Backend Engineer**: Focus on Node.js, Redis, and APIs.
+```
+
+Commit with message 'docs: define agent roles'.</pre>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
 
         <h3>Verification Checklist</h3>
@@ -334,36 +463,110 @@ Orbit is a dashboard for visualizing long-running background tasks.
             <h3>Step 1: Scaffold Server</h3>
             <div class="concept"><strong>Concept: Setting the Foundation.</strong> We establish the environment
                 (Node/Express) explicitly so the Agent knows the strict constraints it must operate within.</div>
-            <p>Create a <code>server</code> folder. Inside it, run <code>npm init -y</code> and install dependencies:
-            </p>
-            <pre>npm install express redis bullmq cors ws</pre>
-            <div class="prompt-hint">
-                <span
-                    style="background:#f59e0b; color:#000; padding:2px 6px; border-radius:4px; font-size:0.8em; margin-right:5px; font-weight:bold;">⏳
-                    Long Task</span>
-                🤖 <strong>Agent Prompt:</strong> "Create a `server` directory. Initialize Node, install express,
-                bullmq, cors, ws. Commit with message 'chore: init server'."
+
+            <div class="tab-container">
+                <div class="tab-header">
+                    <button class="tab-btn active" onclick="switchTab(this, 'p2s1-manual')">My Hand (Manual)</button>
+                    <button class="tab-btn" onclick="switchTab(this, 'p2s1-agent')">AI Agent (Automated)</button>
+                </div>
+
+                <div id="p2s1-manual" class="tab-content active">
+                    <p>Create a <code>server</code> folder. Inside it, run <code>npm init -y</code> and install
+                        dependencies:</p>
+                    <pre>npm install express redis bullmq cors ws</pre>
+                    <p><em>Optimization (M1/8GB)</em>: Use native Redis (<code>brew install redis</code>) instead of
+                        Docker.</p>
+                </div>
+
+                <div id="p2s1-agent" class="tab-content">
+                    <div class="prompt-hint">
+                        <span
+                            style="background:#f59e0b; color:#000; padding:2px 6px; border-radius:4px; font-size:0.8em; margin-right:5px; font-weight:bold;">⏳
+                            Long Task</span>
+                        <strong>🤖 Agent Prompt:</strong>
+                        <div class="copy-wrapper">
+                            <button class="copy-btn"
+                                onclick="copyToClipboard(this.nextElementSibling.innerText, this)">Copy Prompt</button>
+                            <pre>Create a `server` directory. Initialize Node.js (npm init -y) and install the following dependencies:
+- express
+- bullmq
+- cors
+- ws
+- redis
+
+Commit with message 'chore: init server'.</pre>
+                        </div>
+                    </div>
+                </div>
             </div>
-            <p><em>Optimization (M1/8GB)</em>: Use native Redis (<code>brew install redis</code>) instead of Docker.</p>
 
             <h3>Step 2: Create API</h3>
             <div class="concept"><strong>Concept: Interface First Design.</strong> Defining the API contract (POST
                 /tasks) <em>before</em> writing logic locks in how the system components communicate, reducing
                 integration bugs.</div>
-            <p>Create <code>server/index.js</code>. Build an Express app with a POST <code>/tasks</code> endpoint that
-                adds jobs to a BullMQ queue named <code>orbit-tasks</code>.</p>
-            <div class="prompt-hint">🤖 <strong>Agent Prompt:</strong> "Act as Backend Engineer. Read @PRD.md. Create
-                `server/index.js` with Express and a POST /tasks endpoint (push to 'orbit-tasks' queue). Commit: 'feat:
-                add task api'."</div>
+
+            <div class="tab-container">
+                <div class="tab-header">
+                    <button class="tab-btn active" onclick="switchTab(this, 'p2s2-manual')">My Hand (Manual)</button>
+                    <button class="tab-btn" onclick="switchTab(this, 'p2s2-agent')">AI Agent (Automated)</button>
+                </div>
+
+                <div id="p2s2-manual" class="tab-content active">
+                    <p>Create <code>server/index.js</code>. Build an Express app with a POST <code>/tasks</code>
+                        endpoint that adds jobs to a BullMQ queue named <code>orbit-tasks</code>.</p>
+                </div>
+
+                <div id="p2s2-agent" class="tab-content">
+                    <div class="prompt-hint">
+                        <strong>🤖 Agent Prompt:</strong>
+                        <div class="copy-wrapper">
+                            <button class="copy-btn"
+                                onclick="copyToClipboard(this.nextElementSibling.innerText, this)">Copy Prompt</button>
+                            <pre>Act as Backend Engineer. Read the `PRD.md` file.
+
+Create `server/index.js` with Step 1:
+- Setup Express app with CORS and JSON parsing.
+- Initialize a BullMQ Queue named 'orbit-tasks' connecting to local Redis.
+- Create a POST /tasks endpoint that accepts { type, payload } and adds it to the queue.
+
+Commit with message 'feat: add task api'.</pre>
+                        </div>
+                    </div>
+                </div>
+            </div>
 
             <h3>Step 3: Create Worker</h3>
             <div class="concept"><strong>Concept: Asynchronous Processing.</strong> We decouple "accepting work" (API)
                 from "doing work" (Worker) to keep the app responsive under load. This is a key distributed system
                 pattern.</div>
-            <p>Create <code>server/worker.js</code>. Process jobs from <code>orbit-tasks</code>. Simulate work by
-                sleeping for 5 seconds.</p>
-            <div class="prompt-hint">🤖 <strong>Agent Prompt:</strong> "Create `server/worker.js` to process
-                'orbit-tasks' with BullMQ (simulate 5s work). Commit: 'feat: add worker'."</div>
+
+            <div class="tab-container">
+                <div class="tab-header">
+                    <button class="tab-btn active" onclick="switchTab(this, 'p2s3-manual')">My Hand (Manual)</button>
+                    <button class="tab-btn" onclick="switchTab(this, 'p2s3-agent')">AI Agent (Automated)</button>
+                </div>
+
+                <div id="p2s3-manual" class="tab-content active">
+                    <p>Create <code>server/worker.js</code>. Process jobs from <code>orbit-tasks</code>. Simulate work
+                        by sleeping for 5 seconds.</p>
+                </div>
+
+                <div id="p2s3-agent" class="tab-content">
+                    <div class="prompt-hint">
+                        <strong>🤖 Agent Prompt:</strong>
+                        <div class="copy-wrapper">
+                            <button class="copy-btn"
+                                onclick="copyToClipboard(this.nextElementSibling.innerText, this)">Copy Prompt</button>
+                            <pre>Create `server/worker.js` that:
+1. Connects to 'orbit-tasks' BullMQ queue.
+2. Processes jobs by logging "Processing..." and running a setTimeout for 5 seconds (simulated work).
+3. Logs "Job Completed" when done.
+
+Commit with message 'feat: add worker'.</pre>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
 
         <h3>Verification Checklist</h3>
@@ -387,26 +590,69 @@ Orbit is a dashboard for visualizing long-running background tasks.
             <div class="concept"><strong>Concept: Separation of Concerns.</strong> We keep the Client logic completely
                 separate from the Server. Vite handles the complex bundling, allowing the Agent to focus purely on React
                 components.</div>
-            <p>In the root, create a Vite app:</p>
-            <pre>npm create vite@latest client -- --template react
+
+            <div class="tab-container">
+                <div class="tab-header">
+                    <button class="tab-btn active" onclick="switchTab(this, 'p3s1-manual')">My Hand (Manual)</button>
+                    <button class="tab-btn" onclick="switchTab(this, 'p3s1-agent')">AI Agent (Automated)</button>
+                </div>
+
+                <div id="p3s1-manual" class="tab-content active">
+                    <p>In the root, create a Vite app:</p>
+                    <pre>npm create vite@latest client -- --template react
 cd client && npm install</pre>
-            <div class="prompt-hint">
-                <span
-                    style="background:#f59e0b; color:#000; padding:2px 6px; border-radius:4px; font-size:0.8em; margin-right:5px; font-weight:bold;">⏳
-                    Long Task</span>
-                🤖 <strong>Agent Prompt:</strong> "Create a Vite React app named 'client'. Install dependencies. Commit:
-                'chore: init frontend'."
+                </div>
+
+                <div id="p3s1-agent" class="tab-content">
+                    <div class="prompt-hint">
+                        <span
+                            style="background:#f59e0b; color:#000; padding:2px 6px; border-radius:4px; font-size:0.8em; margin-right:5px; font-weight:bold;">⏳
+                            Long Task</span>
+                        <strong>🤖 Agent Prompt:</strong>
+                        <div class="copy-wrapper">
+                            <button class="copy-btn"
+                                onclick="copyToClipboard(this.nextElementSibling.innerText, this)">Copy Prompt</button>
+                            <pre>Create a Vite React app named `client` in the root directory.
+Install the dependencies by running `npm install`.
+
+Commit with message 'chore: init frontend'.</pre>
+                        </div>
+                    </div>
+                </div>
             </div>
 
             <h3>Step 2: Connect to API</h3>
             <div class="concept"><strong>Concept: Full Stack Integration.</strong> Connecting the Frontend UI triggers
                 to the Backend logic creates the feedback loop that proves the system is actually working as a whole.
             </div>
-            <p>Create a "Start Mission" button (calls POST <code>http://localhost:3000/tasks</code>) and list active
-                tasks.</p>
-            <div class="prompt-hint">🤖 <strong>Agent Prompt:</strong> "Act as Frontend Specialist. In
-                `client/src/App.jsx`, add a 'Start Mission' button calling POST /tasks. Display job list. Commit: 'feat:
-                dashboard UI'."</div>
+
+            <div class="tab-container">
+                <div class="tab-header">
+                    <button class="tab-btn active" onclick="switchTab(this, 'p3s2-manual')">My Hand (Manual)</button>
+                    <button class="tab-btn" onclick="switchTab(this, 'p3s2-agent')">AI Agent (Automated)</button>
+                </div>
+
+                <div id="p3s2-manual" class="tab-content active">
+                    <p>Create a "Start Mission" button (calls POST <code>http://localhost:3000/tasks</code>) and list
+                        active tasks.</p>
+                </div>
+
+                <div id="p3s2-agent" class="tab-content">
+                    <div class="prompt-hint">
+                        <strong>🤖 Agent Prompt:</strong>
+                        <div class="copy-wrapper">
+                            <button class="copy-btn"
+                                onclick="copyToClipboard(this.nextElementSibling.innerText, this)">Copy Prompt</button>
+                            <pre>Act as Frontend Specialist.
+In `client/src/App.jsx`, implement a Dashboard that:
+1. Has a "Start Mission" button that sends a POST request to `http://localhost:3000/tasks`.
+2. Displays the list of returned tasks (mocked or real).
+
+Commit with message 'feat: dashboard UI'.</pre>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
 
         <h3>Verification Checklist</h3>
@@ -430,12 +676,57 @@ cd client && npm install</pre>
             <h3>Step 1: Security Audit</h3>
             <div class="concept"><strong>Concept: Automated Vigilance.</strong> Agents can write insecure code. Using
                 tools like <code>npm audit</code> ensures we catch known vulnerabilities before deploying.</div>
-            <p>Run <code>npm audit</code> in `server/`. Create <code>SECURITY.md</code> noting any findings.</p>
+
+            <div class="tab-container">
+                <div class="tab-header">
+                    <button class="tab-btn active" onclick="switchTab(this, 'p4s1-manual')">My Hand (Manual)</button>
+                    <button class="tab-btn" onclick="switchTab(this, 'p4s1-agent')">AI Agent (Automated)</button>
+                </div>
+
+                <div id="p4s1-manual" class="tab-content active">
+                    <p>Run <code>npm audit</code> in `server/`. Create <code>SECURITY.md</code> noting any findings.</p>
+                </div>
+
+                <div id="p4s1-agent" class="tab-content">
+                    <div class="prompt-hint">
+                        <strong>🤖 Agent Prompt:</strong>
+                        <div class="copy-wrapper">
+                            <button class="copy-btn"
+                                onclick="copyToClipboard(this.nextElementSibling.innerText, this)">Copy Prompt</button>
+                            <pre>Run `npm audit` in the `server` directory.
+If any critical vulnerabilities are found, document them in a new file named `SECURITY.md`.
+If none are found, create `SECURITY.md` stating "No critical vulnerabilities found".</pre>
+                        </div>
+                    </div>
+                </div>
+            </div>
 
             <h3>Step 2: Changelog</h3>
             <div class="concept"><strong>Concept: Documentation as Code.</strong> Keeping a history helps both humans
                 and Agents understand how the project has evolved over time.</div>
-            <p>Create <code>CHANGELOG.md</code> and add an entry for "v0.1.0 - Initial Release".</p>
+
+            <div class="tab-container">
+                <div class="tab-header">
+                    <button class="tab-btn active" onclick="switchTab(this, 'p4s2-manual')">My Hand (Manual)</button>
+                    <button class="tab-btn" onclick="switchTab(this, 'p4s2-agent')">AI Agent (Automated)</button>
+                </div>
+
+                <div id="p4s2-manual" class="tab-content active">
+                    <p>Create <code>CHANGELOG.md</code> and add an entry for "v0.1.0 - Initial Release".</p>
+                </div>
+
+                <div id="p4s2-agent" class="tab-content">
+                    <div class="prompt-hint">
+                        <strong>🤖 Agent Prompt:</strong>
+                        <div class="copy-wrapper">
+                            <button class="copy-btn"
+                                onclick="copyToClipboard(this.nextElementSibling.innerText, this)">Copy Prompt</button>
+                            <pre>Create a `CHANGELOG.md` file in the root.
+Add an initial entry for "v0.1.0 - Initial Release" utilizing the dates and changes from the git history.</pre>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
 
         <h3>Verification Checklist</h3>
@@ -516,6 +807,30 @@ cd client && npm install</pre>
         }
 
         window.onload = () => verifyAll();
+
+        function switchTab(btn, tabId) {
+            // Find parent container
+            const container = btn.closest('.tab-container');
+
+            // Toggle buttons
+            container.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+
+            // Toggle content
+            container.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+            container.querySelector(`#${tabId}`).classList.add('active');
+        }
+
+        async function copyToClipboard(text, btn) {
+            try {
+                await navigator.clipboard.writeText(text);
+                const original = btn.innerText;
+                btn.innerText = "Copied!";
+                setTimeout(() => btn.innerText = original, 2000);
+            } catch (err) {
+                console.error('Failed to copy', err);
+            }
+        }
     </script>
     <script type="module">
         import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.esm.min.mjs';
