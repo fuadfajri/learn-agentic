@@ -284,6 +284,26 @@
             display: block;
         }
 
+        /* Context Bridge (State Summary) */
+        .step-bridge {
+            margin-top: 25px;
+            padding: 16px;
+            background: rgba(15, 23, 42, 0.8);
+            border: 1px solid #334155;
+            border-left: 4px solid var(--accent);
+            border-radius: 6px;
+            color: #cbd5e1;
+            font-size: 0.9em;
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+
+        .step-bridge strong {
+            color: #fff;
+            margin-right: 6px;
+        }
+
         /* Prompt Header and Copy Button */
         .prompt-header {
             display: flex;
@@ -377,6 +397,12 @@
                 allows you to "undo" a hallucination instantly. Always commit before asking an Agent to do complex work.
             </div>
             <p>Ensure you are in the workspace root. Run <code>git init</code> if you haven't already.</p>
+            <div class="step-bridge">
+                <span>✅ <strong>Accomplished:</strong> Initialized verified git repository.</span>
+                <span>⚠️ <strong>Current State:</strong> The safety net is active, but the workspace is
+                    undefined.</span>
+                <span>🚀 <strong>Next Objective:</strong> Define the Product Requirements (PRD).</span>
+            </div>
 
             <h3>Step 2: Define Product (PRD)</h3>
             <div class="concept"><strong>Concept: Context is King.</strong> Agents don't guess; they read. A PRD
@@ -427,6 +453,12 @@ Commit with message 'docs: add initial PRD'.</pre>
                     </div>
                 </div>
             </div>
+            <div class="step-bridge">
+                <span>✅ <strong>Accomplished:</strong> Defined the Product "Blueprint" (PRD).</span>
+                <span>⚠️ <strong>Current State:</strong> We know *what* to build, but the AI doesn't know *who* it
+                    is.</span>
+                <span>🚀 <strong>Next Objective:</strong> Define specific Agent Personas (Roles).</span>
+            </div>
 
             <h3>Step 3: Define Roles</h3>
             <div class="concept"><strong>Concept: The Persona Pattern.</strong> Assigning a specific role (e.g., 'Senior
@@ -468,6 +500,12 @@ Commit with message 'docs: add initial PRD'.</pre>
 Commit with message 'docs: define agent roles'.</pre>
                     </div>
                 </div>
+            </div>
+            <div class="step-bridge">
+                <span>✅ <strong>Accomplished:</strong> Established distinct Agent Roles.</span>
+                <span>⚠️ <strong>Current State:</strong> The "Team" is ready in concept, but there is no
+                    codebase.</span>
+                <span>🚀 <strong>Next Objective:</strong> Lay the Server Infrastructure.</span>
             </div>
         </div>
 
@@ -531,6 +569,12 @@ Commit with message 'chore: init server'.</pre>
                     </div>
                 </div>
             </div>
+            <div class="step-bridge">
+                <span>✅ <strong>Accomplished:</strong> Installed Core Backend Dependencies.</span>
+                <span>⚠️ <strong>Current State:</strong> We have libraries (Express/BullMQ), but no running
+                    application.</span>
+                <span>🚀 <strong>Next Objective:</strong> Build the REST API Endpoint.</span>
+            </div>
 
             <h3>Step 2: Create API</h3>
             <div class="concept"><strong>Concept: Interface First Design.</strong> Defining the API contract (POST
@@ -546,6 +590,29 @@ Commit with message 'chore: init server'.</pre>
                 <div id="p2s2-manual" class="tab-content active">
                     <p>Create <code>server/index.js</code>. Build an Express app with a POST <code>/tasks</code>
                         endpoint that adds jobs to a BullMQ queue named <code>orbit-tasks</code>.</p>
+                    <details>
+                        <summary>📄 <strong>Click to Copy Solution Code</strong></summary>
+                        <pre style="user-select: all;">const express = require('express');
+const cors = require('cors');
+const { Queue } = require('bullmq');
+
+const app = express();
+app.use(cors());
+app.use(express.json());
+
+// Connect to Redis (defaults to localhost:6379)
+const taskQueue = new Queue('orbit-tasks', {
+    connection: { host: '127.0.0.1', port: 6379 }
+});
+
+app.post('/tasks', async (req, res) => {
+    const { type, payload } = req.body;
+    await taskQueue.add(type || 'GENERIC', payload || {});
+    res.json({ success: true, message: 'Task Queued' });
+});
+
+app.listen(3000, () => console.log('API running on port 3000'));</pre>
+                    </details>
                 </div>
 
                 <div id="p2s2-agent" class="tab-content">
@@ -567,6 +634,12 @@ Commit with message 'feat: add task api'.</pre>
                     </div>
                 </div>
             </div>
+            <div class="step-bridge">
+                <span>✅ <strong>Accomplished:</strong> Built the Task Ingestion API.</span>
+                <span>⚠️ <strong>Current State:</strong> We can *accept* tasks into the Queue, but nobody is
+                    *processing* them.</span>
+                <span>🚀 <strong>Next Objective:</strong> Hire a Background Worker.</span>
+            </div>
 
             <h3>Step 3: Create Worker</h3>
             <div class="concept"><strong>Concept: Asynchronous Processing.</strong> We decouple "accepting work" (API)
@@ -582,6 +655,23 @@ Commit with message 'feat: add task api'.</pre>
                 <div id="p2s3-manual" class="tab-content active">
                     <p>Create <code>server/worker.js</code>. Process jobs from <code>orbit-tasks</code>. Simulate work
                         by sleeping for 5 seconds.</p>
+                    <details>
+                        <summary>📄 <strong>Click to Copy Solution Code</strong></summary>
+                        <pre style="user-select: all;">const { Worker } = require('bullmq');
+
+console.log("Worker started...");
+
+const worker = new Worker('orbit-tasks', async job => {
+    console.log(`Processing Job ${job.id} (${job.name})...`);
+    
+    // Simulate 5 seconds of work
+    await new Promise(resolve => setTimeout(resolve, 5000));
+    
+    console.log(`Job ${job.id} COMPLETED.`);
+}, {
+    connection: { host: '127.0.0.1', port: 6379 }
+});</pre>
+                    </details>
                 </div>
 
                 <div id="p2s3-agent" class="tab-content">
@@ -600,6 +690,12 @@ Commit with message 'feat: add task api'.</pre>
 Commit with message 'feat: add worker'.</pre>
                     </div>
                 </div>
+            </div>
+            <div class="step-bridge">
+                <span>✅ <strong>Accomplished:</strong> Activated the Background Worker.</span>
+                <span>⚠️ <strong>Current State:</strong> The backend loop is fully functional, but invisible to the
+                    user.</span>
+                <span>🚀 <strong>Next Objective:</strong> Build the Dashboard (Frontend).</span>
             </div>
         </div>
 
@@ -657,6 +753,12 @@ Commit with message 'chore: init frontend'.</pre>
                     </div>
                 </div>
             </div>
+            <div class="step-bridge">
+                <span>✅ <strong>Accomplished:</strong> Scaffolded the Vite Client.</span>
+                <span>⚠️ <strong>Current State:</strong> We have a UI framework, but it's disconnected from the
+                    Engine.</span>
+                <span>🚀 <strong>Next Objective:</strong> Connect the Frontend to the Backend API.</span>
+            </div>
 
             <h3>Step 2: Connect to API</h3>
             <div class="concept"><strong>Concept: Full Stack Integration.</strong> Connecting the Frontend UI triggers
@@ -690,6 +792,11 @@ In `client/src/App.jsx`, implement a Dashboard that:
 Commit with message 'feat: dashboard UI'.</pre>
                     </div>
                 </div>
+            </div>
+            <div class="step-bridge">
+                <span>✅ <strong>Accomplished:</strong> Full-Stack Integration Complete.</span>
+                <span>⚠️ <strong>Current State:</strong> The system works, but lacks production hardiness.</span>
+                <span>🚀 <strong>Next Objective:</strong> Security & Quality Assurance.</span>
             </div>
         </div>
 
@@ -739,6 +846,11 @@ If none are found, create `SECURITY.md` stating "No critical vulnerabilities fou
                     </div>
                 </div>
             </div>
+            <div class="step-bridge">
+                <span>✅ <strong>Accomplished:</strong> Verified Security Standards.</span>
+                <span>⚠️ <strong>Current State:</strong> Code is safe, but changes are untracked.</span>
+                <span>🚀 <strong>Next Objective:</strong> Automate the Changelog.</span>
+            </div>
 
             <h3>Step 2: Changelog</h3>
             <div class="concept"><strong>Concept: Documentation as Code.</strong> Keeping a history helps both humans
@@ -766,6 +878,11 @@ If none are found, create `SECURITY.md` stating "No critical vulnerabilities fou
 Add an initial entry for "v0.1.0 - Initial Release" utilizing the dates and changes from the git history.</pre>
                     </div>
                 </div>
+            </div>
+            <div class="step-bridge">
+                <span>✅ <strong>Accomplished:</strong> Documented Version History.</span>
+                <span>⚠️ <strong>Current State:</strong> Project Orbit is Feature Complete.</span>
+                <span>🚀 <strong>Next Objective:</strong> You are cleared for launch.</span>
             </div>
         </div>
 
