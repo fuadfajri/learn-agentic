@@ -4,14 +4,16 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Project Orbit: Mission Control</title>
+    <title>Project Cosmos: Mission Control</title>
     <style>
         :root {
             --bg: #0f172a;
             --card: #1e293b;
             --text: #e2e8f0;
-            --accent: #38bdf8;
+            --accent: #8b5cf6;
+            /* Violet */
             --success: #22c55e;
+            --warning: #f59e0b;
             --error: #ef4444;
             --code-bg: #334155;
         }
@@ -33,51 +35,146 @@
             margin-top: 0;
         }
 
-        .phase-card>h3 {
-            margin-top: 40px;
-            border-top: 1px solid rgba(255, 255, 255, 0.1);
-            padding-top: 20px;
-        }
-
+        /* Hero */
         .hero {
             text-align: center;
             margin-bottom: 40px;
             padding: 40px;
             background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
             border-radius: 12px;
-            border: 1px solid #334155;
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+            border: 1px solid #4c1d95;
+            box-shadow: 0 4px 50px rgba(139, 92, 246, 0.2);
         }
 
-        .status-summary {
-            background: rgba(0, 0, 0, 0.3);
-            padding: 15px;
-            border-radius: 8px;
-            margin-top: 20px;
-            display: inline-block;
-            border: 1px solid #475569;
-        }
-
-        .status-summary strong {
-            color: var(--accent);
-            font-size: 1.2em;
-        }
-
+        /* Logic Cards */
         .phase-card {
             background-color: var(--card);
             padding: 24px;
             border-radius: 12px;
             margin-bottom: 24px;
             border: 1px solid #334155;
-            position: relative;
         }
 
-        .phase-content {
-            margin-top: 20px;
+        .phase-content h3 {
+            margin-top: 40px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
             padding-top: 20px;
-            border-top: 1px solid #334155;
         }
 
+        .phase-content h3:first-of-type {
+            border-top: none;
+            margin-top: 0;
+        }
+
+        /* Concepts */
+        .concept {
+            background: rgba(255, 255, 255, 0.05);
+            border-left: 3px solid #94a3b8;
+            padding: 10px 15px;
+            margin: 10px 0;
+            font-size: 0.9em;
+            color: #cbd5e1;
+        }
+
+        .concept strong {
+            color: #f8fafc;
+        }
+
+        /* Tabs */
+        .tab-container {
+            margin-top: 20px;
+            background: #020617;
+            border: 1px solid #334155;
+            border-radius: 8px;
+            overflow: hidden;
+        }
+
+        .tab-header {
+            display: flex;
+            background: #0f172a;
+            border-bottom: 1px solid #334155;
+        }
+
+        .tab-btn {
+            flex: 1;
+            padding: 12px;
+            background: transparent;
+            border: none;
+            color: #94a3b8;
+            cursor: pointer;
+            font-weight: 600;
+            border-right: 1px solid #334155;
+        }
+
+        .tab-btn.active {
+            color: var(--accent);
+            background: #1e293b;
+            border-bottom: 2px solid var(--accent);
+        }
+
+        .tab-content {
+            padding: 25px;
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        /* Code & Pre */
+        pre {
+            background: var(--code-bg);
+            padding: 15px;
+            border-radius: 6px;
+            overflow-x: auto;
+            border: 1px solid #475569;
+            color: #d8b4fe;
+        }
+
+        code {
+            background: rgba(0, 0, 0, 0.3);
+            padding: 2px 6px;
+            border-radius: 4px;
+            color: #e9d5ff;
+            font-family: monospace;
+        }
+
+        /* Context Bridges */
+        .step-bridge {
+            margin-top: 25px;
+            padding: 16px;
+            background: rgba(15, 23, 42, 0.8);
+            border: 1px solid #334155;
+            border-left: 4px solid var(--accent);
+            border-radius: 6px;
+            color: #cbd5e1;
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+            font-size: 0.9em;
+        }
+
+        .step-bridge strong {
+            color: #fff;
+            margin-right: 6px;
+        }
+
+        /* Verify Blocks */
+        .verify-block {
+            margin-top: 15px;
+            padding: 15px;
+            background: rgba(34, 197, 94, 0.1);
+            border: 1px solid rgba(34, 197, 94, 0.3);
+            border-radius: 6px;
+            font-size: 0.9em;
+        }
+
+        .verify-block h4 {
+            margin: 0 0 10px 0;
+            color: var(--success);
+        }
+
+        /* Task List */
         .task-list {
             list-style: none;
             padding: 0;
@@ -96,10 +193,6 @@
             border-radius: 8px;
         }
 
-        .task-item:last-child {
-            margin-bottom: 0;
-        }
-
         .status-icon {
             width: 24px;
             height: 24px;
@@ -109,12 +202,6 @@
             align-items: center;
             justify-content: center;
             font-weight: bold;
-            flex-shrink: 0;
-        }
-
-        .status-pending {
-            background: #334155;
-            color: #94a3b8;
         }
 
         .status-pass {
@@ -129,241 +216,40 @@
             border: 1px solid var(--error);
         }
 
+        /* Buttons */
         .verify-btn {
+            width: 100%;
+            padding: 10px;
             background: var(--accent);
-            color: #0f172a;
+            color: white;
             border: none;
-            padding: 10px 20px;
-            font-size: 14px;
-            font-weight: bold;
             border-radius: 6px;
             cursor: pointer;
-            transition: all 0.2s;
+            font-weight: bold;
             margin-top: 10px;
-            width: 100%;
         }
 
         .verify-btn:hover {
             opacity: 0.9;
-            transform: translateY(-1px);
-        }
-
-        .verify-btn:disabled {
-            opacity: 0.5;
-            cursor: not-allowed;
-            transform: none;
-        }
-
-        pre {
-            background: var(--code-bg);
-            padding: 15px;
-            border-radius: 6px;
-            overflow-x: auto;
-            border: 1px solid #475569;
-        }
-
-        code {
-            font-family: monospace;
-            color: #fca5a5;
-        }
-
-        details {
-            background: #0f172a;
-            padding: 10px;
-            border-radius: 6px;
-            margin: 10px 0;
-            cursor: pointer;
-        }
-
-        summary {
-            font-weight: bold;
-            color: var(--accent);
-        }
-
-        .prompt-hint {
-            background: linear-gradient(90deg, rgba(56, 189, 248, 0.1) 0%, rgba(56, 189, 248, 0) 100%);
-            border-left: 3px solid var(--accent);
-            padding: 10px 15px;
-            margin: 10px 0;
-            font-size: 0.9em;
-            color: #bae6fd;
-            border-radius: 0 4px 4px 0;
-        }
-
-        .resources {
-            margin-top: 10px;
-            font-size: 0.85em;
-        }
-
-        .resource-link {
-            color: #94a3b8;
-            margin-right: 15px;
-            text-decoration: none;
-            border-bottom: 1px dotted #94a3b8;
-            transition: color 0.2s;
-        }
-
-        .resource-link:hover {
-            color: var(--accent);
-            border-bottom-color: var(--accent);
-        }
-
-        .concept {
-            background: rgba(255, 255, 255, 0.05);
-            border-left: 3px solid #94a3b8;
-            padding: 10px 15px;
-            margin: 10px 0;
-            font-size: 0.9em;
-            color: #cbd5e1;
-            border-radius: 0 4px 4px 0;
-        }
-
-        .concept strong {
-            color: #f8fafc;
-        }
-
-        .phase-content h3 {
-            margin-top: 40px;
-            margin-bottom: 15px;
-            border-top: 1px solid rgba(255, 255, 255, 0.1);
-            padding-top: 30px;
-        }
-
-        .phase-content h3:first-of-type {
-            margin-top: 0;
-            border-top: none;
-            padding-top: 0;
-        }
-
-        /* Tabs */
-        .tab-container {
-            margin-top: 20px;
-            background: #1e293b;
-            border: 1px solid #334155;
-            border-radius: 8px;
-            overflow: hidden;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-        }
-
-        .tab-header {
-            display: flex;
-            background: #0f172a;
-            border-bottom: 1px solid #334155;
-        }
-
-        .tab-btn {
-            flex: 1;
-            /* Make tabs fill the width 50/50 */
-            padding: 12px 20px;
-            background: transparent;
-            border: none;
-            color: #94a3b8;
-            cursor: pointer;
-            font-size: 0.95em;
-            font-weight: 600;
-            transition: all 0.2s;
-            border-right: 1px solid #334155;
-            text-align: center;
-        }
-
-        .tab-btn:last-child {
-            border-right: none;
-        }
-
-        .tab-btn:hover {
-            color: var(--text);
-            background: rgba(255, 255, 255, 0.05);
-        }
-
-        .tab-btn.active {
-            color: var(--accent);
-            background: #1e293b;
-            border-bottom: 2px solid var(--accent);
-        }
-
-        .tab-content {
-            padding: 25px;
-            display: none;
-        }
-
-        .tab-content.active {
-            display: block;
-        }
-
-        /* Context Bridge (State Summary) */
-        .step-bridge {
-            margin-top: 25px;
-            padding: 16px;
-            background: rgba(15, 23, 42, 0.8);
-            border: 1px solid #334155;
-            border-left: 4px solid var(--accent);
-            border-radius: 6px;
-            color: #cbd5e1;
-            font-size: 0.9em;
-            display: flex;
-            flex-direction: column;
-            gap: 6px;
-        }
-
-        .step-bridge strong {
-            color: #fff;
-            margin-right: 6px;
-        }
-
-        /* Verify It Yourself Block */
-        .verify-block {
-            margin-top: 15px;
-            padding: 15px;
-            background: rgba(34, 197, 94, 0.1);
-            /* Green tint */
-            border: 1px solid rgba(34, 197, 94, 0.3);
-            border-radius: 6px;
-            font-size: 0.9em;
-        }
-
-        .verify-block h4 {
-            margin: 0 0 10px 0;
-            color: var(--success);
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            font-size: 1em;
-        }
-
-        .verify-block code {
-            background: rgba(0, 0, 0, 0.3);
-            color: #86efac;
-            padding: 2px 6px;
-        }
-
-        /* Prompt Header and Copy Button */
-        .prompt-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 8px;
         }
 
         .copy-btn {
+            float: right;
             background: rgba(255, 255, 255, 0.1);
             border: 1px solid rgba(255, 255, 255, 0.2);
-            color: #fff;
-            padding: 4px 10px;
+            color: white;
+            padding: 4px 8px;
             border-radius: 4px;
-            font-size: 0.75em;
             cursor: pointer;
-            transition: all 0.2s;
+            font-size: 0.8em;
         }
 
-        .copy-btn:hover {
-            background: var(--accent);
-            color: #000;
-        }
-
-        /* Adjust pre inside prompt hint to have no extra margin since header handles it */
-        .prompt-hint pre {
-            margin-top: 0;
-            border: 1px solid rgba(56, 189, 248, 0.3);
+        /* Agent Prompts */
+        .prompt-hint {
+            background: linear-gradient(90deg, rgba(139, 92, 246, 0.1) 0%, rgba(139, 92, 246, 0) 100%);
+            border-left: 3px solid var(--accent);
+            padding: 10px 15px;
+            margin: 10px 0;
         }
     </style>
 </head>
@@ -371,716 +257,223 @@
 <body>
 
     <div class="hero">
-        <h1>🚀 Project Orbit: Mission Control</h1>
-        <p><strong>The Objective:</strong> Master Structured Agentic Engineering.</p>
-        <p>You are about to build <em>Orbit</em>, an AI Task Orchestration Platform. <br>
-            The true goal is to experience a <strong>Structured AI Workflow</strong>: defining Roles, writing PRDs, and
-            using Verification Loops to build complex software systematically.</p>
-        <p style="color: #94a3b8; font-size: 0.9em;">⏱️ <strong>Estimated Total Time:</strong> ~2 Hours</p>
-
-        <div class="status-summary">
-            Current Status: <strong id="globalStatus">Initializing...</strong>
+        <h1>Project Cosmos 🌌</h1>
+        <p><strong>Goal:</strong> Build a "Second Brain" Knowledge Graph.</p>
+        <div style="margin-top: 20px;">
+            <span
+                style="background:var(--accent); color:white; padding:4px 8px; border-radius:4px; font-size:0.9em;">Level
+                1: The Builder</span>
         </div>
     </div>
 
-    <!-- Architecture -->
     <div class="phase-card">
-        <h2>🏗️ System Architecture</h2>
-        <p><strong>What is Orbit?</strong> It is a "System Control" app where users submit tasks (Research, Analysis)
-            which are queued and processed asynchronously by worker agents.</p>
-        <p>Before you build, visualize. This is what you will create:</p>
-        <div class="mermaid">
-            graph TD
-            subgraph "Frontend"
-            Dashboard[React Dashboard]
-            WS_Client[WebSocket Client]
-            end
-
-            subgraph "Backend"
-            API[Express API]
-            Worker[Worker Process]
-            end
-
-            Dashboard -->|POST /tasks| API
-            API -->|Queue| Redis[(Redis)]
-            Worker -->|Process| Redis
-            Redis -->|Updates| API
-            API -->|WS Push| WS_Client
-        </div>
+        <h2>🏗️ Architecture</h2>
+        <p>We are building a local-first Knowledge Management System.</p>
+        <pre>
+[FileSystem (Markdown)] <--- [Node.js Server] ---> [React Force Graph]</pre>
     </div>
 
     <!-- Phase 1 -->
     <div class="phase-card">
-        <h2>Phase 1: The Architect (Planning) <span style="font-size:0.6em; opacity:0.7; font-weight:normal">⏱️
-                15m</span></h2>
-        <p><strong>Objective</strong>: Define the system before writing code. This teaches you how Antigravity uses
-            context files.</p>
-        <div class="resources">
-            📚 Learn More:
-            <a href="https://www.atlassian.com/agile/product-management/product-requirements" target="_blank"
-                class="resource-link">What is a PRD?</a>
-            <a href="https://www.markdownguide.org/basic-syntax/" target="_blank" class="resource-link">Markdown
-                Syntax</a>
-        </div>
+        <h2>Phase 1: The Foundation <span style="font-size:0.6em; opacity:0.7;">⏱️ 30m</span></h2>
 
         <div class="phase-content">
-            <h3>Step 1: Initialize</h3>
-            <div class="concept"><strong>Concept: Version Control.</strong> Git provides a safety net. For Agents, it
-                allows you to "undo" a hallucination instantly. Always commit before asking an Agent to do complex work.
-            </div>
-            <p>Ensure you are in the workspace root. Run <code>git init</code> if you haven't already.</p>
-            <div class="step-bridge">
-                <span>✅ <strong>Accomplished:</strong> Initialized verified git repository.</span>
-                <span>⚠️ <strong>Current State:</strong> The safety net is active, but the workspace is
-                    undefined.</span>
-                <span>🚀 <strong>Next Objective:</strong> Define the Product Requirements (PRD).</span>
-            </div>
-
-            <h3>Step 2: Define Product (PRD)</h3>
-            <div class="concept"><strong>Concept: Context is King.</strong> Agents don't guess; they read. A PRD
-                (Product Requirements Document) is the single source of truth that aligns the Agent's output with your
-                intent.</div>
+            <!-- Step 1 -->
+            <h3>Step 1: The Shell</h3>
+            <div class="concept"><strong>Concept: Modern Stack.</strong> we use Vite for speed and React for
+                interaction.</div>
 
             <div class="tab-container">
                 <div class="tab-header">
-                    <button class="tab-btn active" onclick="switchTab(this, 'p1s2-manual')">My Hand (Manual)</button>
-                    <button class="tab-btn" onclick="switchTab(this, 'p1s2-agent')">AI Agent (Automated)</button>
+                    <button class="tab-btn active" onclick="switchTab(this, 's1-manual')">My Hand</button>
+                    <button class="tab-btn" onclick="switchTab(this, 's1-agent')">AI Agent</button>
                 </div>
-
-                <div id="p1s2-manual" class="tab-content active">
-                    <p>Create a file <code>PRD.md</code> in the root.</p>
-                    <details open>
-                        <summary>📄 <strong>Click to Copy PRD Content</strong></summary>
-                        <pre style="user-select: all;"># Product Requirements Document: Orbit
-## Overview
-Orbit is a dashboard for visualizing long-running background tasks.
-## Features
-- **Task Submission**: POST /api/tasks (Type: Research, Analysis)
-- **Worker Queue**: Redis-backed queue for asynchronous processing.
-- **Real-time Status**: WebSocket updates for task progress.</pre>
-                    </details>
+                <div id="s1-manual" class="tab-content active">
+                    <p>Initialize Vite project named <code>client</code>:</p>
+                    <pre>npm create vite@latest client -- --template react</pre>
                 </div>
-
-                <div id="p1s2-agent" class="tab-content">
+                <div id="s1-agent" class="tab-content">
                     <div class="prompt-hint">
-                        <div class="prompt-header">
-                            <strong>🤖 Agent Prompt:</strong>
-                            <button class="copy-btn"
-                                onclick="copyToClipboard(this.closest('.prompt-hint').querySelector('pre').innerText, this)">Copy
-                                Prompt</button>
-                        </div>
-                        <pre>Create `PRD.md` with the following content:
-
-```markdown
-# Product Requirements Document: Orbit
-## Overview
-Orbit is a dashboard for visualizing long-running background tasks.
-## Features
-- **Task Submission**: POST /api/tasks (Type: Research, Analysis)
-- **Worker Queue**: Redis-backed queue for asynchronous processing.
-- **Real-time Status**: WebSocket updates for task progress.
-```
-
-Commit with message 'docs: add initial PRD'.</pre>
+                        <button class="copy-btn"
+                            onclick="copyToClipboard(this.parentElement.querySelector('pre').innerText, this)">Copy</button>
+                        <strong>🤖 Prompt:</strong>
+                        <pre>Create a Vite React app named `client` in the root.
+Install dependencies with `npm install`.</pre>
                     </div>
                 </div>
             </div>
-        </div>
-    </div>
-    <div class="verify-block">
-        <h4>🔍 Verify It Yourself:</h4>
-        <p>Run <code>cat PRD.md</code> in your terminal. You should see the Markdown file defining the "Worker Queue".
-        </p>
-    </div>
-    <div class="step-bridge">
-        <span>✅ <strong>Accomplished:</strong> Defined the Product "Blueprint" (PRD).</span>
-        <span>⚠️ <strong>Current State:</strong> We know *what* to build, but the AI doesn't know *who* it
-            is.</span>
-        <span>🚀 <strong>Next Objective:</strong> Define specific Agent Personas (Roles).</span>
-    </div>
 
-    <h3>Step 3: Define Roles</h3>
-    <div class="concept"><strong>Concept: The Persona Pattern.</strong> Assigning a specific role (e.g., 'Senior
-        Architect') primes the LLM to access specific knowledge domains and adopt a professional tone.</div>
-
-    <div class="tab-container">
-        <div class="tab-header">
-            <button class="tab-btn active" onclick="switchTab(this, 'p1s3-manual')">My Hand (Manual)</button>
-            <button class="tab-btn" onclick="switchTab(this, 'p1s3-agent')">AI Agent (Automated)</button>
-        </div>
-
-        <div id="p1s3-manual" class="tab-content active">
-            <p>Create a directory <code>.agent/active_context</code> and a file inside it named
-                <code>roles.md</code>:
-            </p>
-            <pre># Roles
-- **Architect**: Responsible for system design and PRDs.
-- **Frontend Specialist**: Focus on React, Tailwind, and UX.
-- **Backend Engineer**: Focus on Node.js, Redis, and APIs.</pre>
-        </div>
-
-        <div id="p1s3-agent" class="tab-content">
-            <div class="prompt-hint">
-                <div class="prompt-header">
-                    <strong>🤖 Agent Prompt:</strong>
-                    <button class="copy-btn"
-                        onclick="copyToClipboard(this.closest('.prompt-hint').querySelector('pre').innerText, this)">Copy
-                        Prompt</button>
-                </div>
-                <pre>Create a directory `.agent/active_context` and a file inside it named `roles.md` with the following content:
-
-```markdown
-# Roles
-- **Architect**: Responsible for system design and PRDs.
-- **Frontend Specialist**: Focus on React, Tailwind, and UX.
-- **Backend Engineer**: Focus on Node.js, Redis, and APIs.
-```
-
-Commit with message 'docs: define agent roles'.</pre>
-            </div>
-        </div>
-    </div>
-    </div>
-    </div>
-    <div class="verify-block">
-        <h4>🔍 Verify It Yourself:</h4>
-        <p>Check the file: <code>ls -R .agent</code>. Confirm <code>roles.md</code> exists inside
-            <code>active_context/</code>.
-        </p>
-    </div>
-    <div class="step-bridge">
-        <span>✅ <strong>Accomplished:</strong> Established distinct Agent Roles.</span>
-        <span>⚠️ <strong>Current State:</strong> The "Team" is ready in concept, but there is no
-            codebase.</span>
-        <span>🚀 <strong>Next Objective:</strong> Lay the Server Infrastructure.</span>
-    </div>
-    </div>
-
-    <h3>Verification Checklist</h3>
-    <ul class="task-list" id="phase1-list"></ul>
-    <button class="verify-btn" onclick="verifyAll(this)">📡 Verify Phase 1</button>
-    </div>
-
-    <!-- Phase 2 -->
-    <div class="phase-card">
-        <h2>Phase 2: The Engineer (Backend Setup) <span style="font-size:0.6em; opacity:0.7; font-weight:normal">⏱️
-                45m</span></h2>
-        <p><strong>Objective</strong>: Build a robust backend with a worker queue.</p>
-        <div class="resources">
-            📚 Learn More:
-            <a href="https://expressjs.com/" target="_blank" class="resource-link">Express</a>
-            <a href="https://docs.bullmq.io/" target="_blank" class="resource-link">BullMQ Guide</a>
-            <a href="https://redis.io/docs/about/" target="_blank" class="resource-link">Redis Crash Course</a>
-        </div>
-
-        <div class="phase-content">
-            <h3>Step 1: Scaffold Server</h3>
-            <div class="concept"><strong>Concept: Setting the Foundation.</strong> We establish the environment
-                (Node/Express) explicitly so the Agent knows the strict constraints it must operate within.</div>
-
-            <div class="tab-container">
-                <div class="tab-header">
-                    <button class="tab-btn active" onclick="switchTab(this, 'p2s1-manual')">My Hand (Manual)</button>
-                    <button class="tab-btn" onclick="switchTab(this, 'p2s1-agent')">AI Agent (Automated)</button>
-                </div>
-
-                <div id="p2s1-manual" class="tab-content active">
-                    <p>Create a <code>server</code> folder. Inside it, run <code>npm init -y</code> and install
-                        dependencies:</p>
-                    <pre>npm install express redis bullmq cors ws</pre>
-                    <p><em>Optimization (M1/8GB)</em>: Use native Redis (<code>brew install redis</code>) instead of
-                        Docker.</p>
-                </div>
-
-                <div id="p2s1-agent" class="tab-content">
-                    <div class="prompt-hint">
-                        <div class="prompt-header">
-                            <div>
-                                <span
-                                    style="background:#f59e0b; color:#000; padding:2px 6px; border-radius:4px; font-size:0.8em; margin-right:5px; font-weight:bold;">⏳
-                                    Long Task</span>
-                                <strong>🤖 Agent Prompt:</strong>
-                            </div>
-                            <button class="copy-btn"
-                                onclick="copyToClipboard(this.closest('.prompt-hint').querySelector('pre').innerText, this)">Copy
-                                Prompt</button>
-                        </div>
-                        <pre>Create a `server` directory. Initialize Node.js (npm init -y) and install the following dependencies:
-- express
-- bullmq
-- cors
-- ws
-- redis
-
-Commit with message 'chore: init server'.</pre>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-    <div class="verify-block">
-        <h4>🔍 Verify It Yourself:</h4>
-        <p>Check <code>server/package.json</code>. Ensure <code>bullmq</code> and <code>express</code> are listed in
-            "dependencies".</p>
-    </div>
-    <div class="step-bridge">
-        <span>✅ <strong>Accomplished:</strong> Installed Core Backend Dependencies.</span>
-        <span>⚠️ <strong>Current State:</strong> We have libraries (Express/BullMQ), but no running
-            application.</span>
-        <span>🚀 <strong>Next Objective:</strong> Build the REST API Endpoint.</span>
-    </div>
-
-    <h3>Step 2: Create API</h3>
-    <div class="concept"><strong>Concept: Interface First Design.</strong> Defining the API contract (POST
-        /tasks) <em>before</em> writing logic locks in how the system components communicate, reducing
-        integration bugs.</div>
-
-    <div class="tab-container">
-        <div class="tab-header">
-            <button class="tab-btn active" onclick="switchTab(this, 'p2s2-manual')">My Hand (Manual)</button>
-            <button class="tab-btn" onclick="switchTab(this, 'p2s2-agent')">AI Agent (Automated)</button>
-        </div>
-
-        <div id="p2s2-manual" class="tab-content active">
-            <p>Create <code>server/index.js</code>. Build an Express app with a POST <code>/tasks</code>
-                endpoint that adds jobs to a BullMQ queue named <code>orbit-tasks</code>.</p>
-            <details>
-                <summary>📄 <strong>Click to Copy Solution Code</strong></summary>
-                <pre style="user-select: all;">const express = require('express');
-const cors = require('cors');
-const { Queue } = require('bullmq');
-
-const app = express();
-app.use(cors());
-app.use(express.json());
-
-// Connect to Redis (defaults to localhost:6379)
-const taskQueue = new Queue('orbit-tasks', {
-    connection: { host: '127.0.0.1', port: 6379 }
-});
-
-app.post('/tasks', async (req, res) => {
-    const { type, payload } = req.body;
-    await taskQueue.add(type || 'GENERIC', payload || {});
-    res.json({ success: true, message: 'Task Queued' });
-});
-
-app.listen(3000, () => console.log('API running on port 3000'));</pre>
-            </details>
-        </div>
-
-        <div id="p2s2-agent" class="tab-content">
-            <div class="prompt-hint">
-                <div class="prompt-header">
-                    <strong>🤖 Agent Prompt:</strong>
-                    <button class="copy-btn"
-                        onclick="copyToClipboard(this.closest('.prompt-hint').querySelector('pre').innerText, this)">Copy
-                        Prompt</button>
-                </div>
-                <pre>Act as Backend Engineer. Read the `PRD.md` file.
-
-Create `server/index.js` with Step 1:
-- Setup Express app with CORS and JSON parsing.
-- Initialize a BullMQ Queue named 'orbit-tasks' connecting to local Redis.
-- Create a POST /tasks endpoint that accepts { type, payload } and adds it to the queue.
-
-Commit with message 'feat: add task api'.</pre>
-            </div>
-        </div>
-    </div>
-    </div>
-    </div>
-    <div class="verify-block">
-        <h4>🔍 Verify It Yourself:</h4>
-        <p>Start the server: <code>node server/index.js</code> in one terminal.<br>
-            Then test it:
-            <code>curl -X POST http://localhost:3000/tasks -H "Content-Type: application/json" -d '{"type":"RESEARCH"}'</code><br>
-            You should see: <code>{"success":true,"message":"Task Queued"}</code>.
-        </p>
-    </div>
-    <div class="step-bridge">
-        <span>✅ <strong>Accomplished:</strong> Built the Task Ingestion API.</span>
-        <span>⚠️ <strong>Current State:</strong> We can *accept* tasks into the Queue, but nobody is
-            *processing* them.</span>
-        <span>🚀 <strong>Next Objective:</strong> Hire a Background Worker.</span>
-    </div>
-
-    <h3>Step 3: Create Worker</h3>
-    <div class="concept"><strong>Concept: Asynchronous Processing.</strong> We decouple "accepting work" (API)
-        from "doing work" (Worker) to keep the app responsive under load. This is a key distributed system
-        pattern.</div>
-
-    <div class="tab-container">
-        <div class="tab-header">
-            <button class="tab-btn active" onclick="switchTab(this, 'p2s3-manual')">My Hand (Manual)</button>
-            <button class="tab-btn" onclick="switchTab(this, 'p2s3-agent')">AI Agent (Automated)</button>
-        </div>
-
-        <div id="p2s3-manual" class="tab-content active">
-            <p>Create <code>server/worker.js</code>. Process jobs from <code>orbit-tasks</code>. Simulate work
-                by sleeping for 5 seconds.</p>
-            <details>
-                <summary>📄 <strong>Click to Copy Solution Code</strong></summary>
-                <pre style="user-select: all;">const { Worker } = require('bullmq');
-
-console.log("Worker started...");
-
-const worker = new Worker('orbit-tasks', async job => {
-    console.log(`Processing Job ${job.id} (${job.name})...`);
-    
-    // Simulate 5 seconds of work
-    await new Promise(resolve => setTimeout(resolve, 5000));
-    
-    console.log(`Job ${job.id} COMPLETED.`);
-}, {
-    connection: { host: '127.0.0.1', port: 6379 }
-});</pre>
-            </details>
-        </div>
-
-        <div id="p2s3-agent" class="tab-content">
-            <div class="prompt-hint">
-                <div class="prompt-header">
-                    <strong>🤖 Agent Prompt:</strong>
-                    <button class="copy-btn"
-                        onclick="copyToClipboard(this.closest('.prompt-hint').querySelector('pre').innerText, this)">Copy
-                        Prompt</button>
-                </div>
-                <pre>Create `server/worker.js` that:
-1. Connects to 'orbit-tasks' BullMQ queue.
-2. Processes jobs by logging "Processing..." and running a setTimeout for 5 seconds (simulated work).
-3. Logs "Job Completed" when done.
-
-Commit with message 'feat: add worker'.</pre>
-            </div>
-        </div>
-    </div>
-    </div>
-    </div>
-    <div class="verify-block">
-        <h4>🔍 Verify It Yourself:</h4>
-        <p>Run <code>node server/worker.js</code>. You should see "Worker started..." and then "Processing Job...".<br>
-            (Make sure Redis is running!)</p>
-    </div>
-    <div class="step-bridge">
-        <span>✅ <strong>Accomplished:</strong> Activated the Background Worker.</span>
-        <span>⚠️ <strong>Current State:</strong> The backend loop is fully functional, but invisible to the
-            user.</span>
-        <span>🚀 <strong>Next Objective:</strong> Build the Dashboard (Frontend).</span>
-    </div>
-    </div>
-
-    <h3>Verification Checklist</h3>
-    <ul class="task-list" id="phase2-list"></ul>
-    <button class="verify-btn" onclick="verifyAll(this)">📡 Verify Phase 2</button>
-    </div>
-
-    <!-- Phase 3 -->
-    <div class="phase-card">
-        <h2>Phase 3: The Frontend Specialist (Dashboard) <span
-                style="font-size:0.6em; opacity:0.7; font-weight:normal">⏱️ 30m</span></h2>
-        <p><strong>Objective</strong>: Visualize the state.</p>
-        <div class="resources">
-            📚 Learn More:
-            <a href="https://vitejs.dev/guide/" target="_blank" class="resource-link">Vite</a>
-            <a href="https://react.dev/learn" target="_blank" class="resource-link">React Quick Start</a>
-        </div>
-
-        <div class="phase-content">
-            <h3>Step 1: Scaffold Client</h3>
-            <div class="concept"><strong>Concept: Separation of Concerns.</strong> We keep the Client logic completely
-                separate from the Server. Vite handles the complex bundling, allowing the Agent to focus purely on React
-                components.</div>
-
-            <div class="tab-container">
-                <div class="tab-header">
-                    <button class="tab-btn active" onclick="switchTab(this, 'p3s1-manual')">My Hand (Manual)</button>
-                    <button class="tab-btn" onclick="switchTab(this, 'p3s1-agent')">AI Agent (Automated)</button>
-                </div>
-
-                <div id="p3s1-manual" class="tab-content active">
-                    <p>In the root, create a Vite app:</p>
-                    <pre>npm create vite@latest client -- --template react
-cd client && npm install</pre>
-                </div>
-
-                <div id="p3s1-agent" class="tab-content">
-                    <div class="prompt-hint">
-                        <div class="prompt-header">
-                            <div>
-                                <span
-                                    style="background:#f59e0b; color:#000; padding:2px 6px; border-radius:4px; font-size:0.8em; margin-right:5px; font-weight:bold;">⏳
-                                    Long Task</span>
-                                <strong>🤖 Agent Prompt:</strong>
-                            </div>
-                            <button class="copy-btn"
-                                onclick="copyToClipboard(this.closest('.prompt-hint').querySelector('pre').innerText, this)">Copy
-                                Prompt</button>
-                        </div>
-                        <pre>Create a Vite React app named `client` in the root directory.
-Install the dependencies by running `npm install`.
-
-Commit with message 'chore: init frontend'.</pre>
-                    </div>
-                </div>
-            </div>
             <div class="verify-block">
                 <h4>🔍 Verify It Yourself:</h4>
-                <p>Run <code>npm run dev -- --port 5000</code> in client/. Open localhost:5000 to see the "Vite + React"
-                    default page.</p>
+                <p>Run <code>ls client/package.json</code> to confirm the project exists.</p>
             </div>
             <div class="step-bridge">
-                <span>✅ <strong>Accomplished:</strong> Scaffolded the Vite Client.</span>
-                <span>⚠️ <strong>Current State:</strong> We have a UI framework, but it's disconnected from the
-                    Engine.</span>
-                <span>🚀 <strong>Next Objective:</strong> Connect the Frontend to the Backend API.</span>
+                <span>✅ <strong>Accomplished:</strong> Created the React Shell.</span>
+                <span>⚠️ <strong>Current State:</strong> It's just a blank template. It has no data.</span>
+                <span>🚀 <strong>Next Objective:</strong> Build the Data Layer (Markdown Parser).</span>
             </div>
 
-            <h3>Step 2: Connect to API</h3>
-            <div class="concept"><strong>Concept: Full Stack Integration.</strong> Connecting the Frontend UI triggers
-                to the Backend logic creates the feedback loop that proves the system is actually working as a whole.
-            </div>
+            <!-- Step 2 -->
+            <h3>Step 2: The Data Layer</h3>
+            <div class="concept"><strong>Concept: Server-Side Logic.</strong> Browsers can't read your files directly.
+                usage Node.js to bridge the gap.</div>
 
             <div class="tab-container">
                 <div class="tab-header">
-                    <button class="tab-btn active" onclick="switchTab(this, 'p3s2-manual')">My Hand (Manual)</button>
-                    <button class="tab-btn" onclick="switchTab(this, 'p3s2-agent')">AI Agent (Automated)</button>
+                    <button class="tab-btn active" onclick="switchTab(this, 's2-manual')">My Hand</button>
+                    <button class="tab-btn" onclick="switchTab(this, 's2-agent')">AI Agent</button>
                 </div>
-
-                <div id="p3s2-manual" class="tab-content active">
-                    <p>Create a "Start Mission" button (calls POST <code>http://localhost:3000/tasks</code>) and list
-                        active tasks.</p>
+                <div id="s2-manual" class="tab-content active">
+                    <p>1. Create <code>server/</code> folder. Run <code>npm init -y</code>.<br>
+                        2. Install: <code>npm install express cors gray-matter glob</code><br>
+                        3. Create <code>server/index.js</code> that scans a <code>../notes</code> folder and returns
+                        JSON.</p>
                 </div>
-
-                <div id="p3s2-agent" class="tab-content">
+                <div id="s2-agent" class="tab-content">
                     <div class="prompt-hint">
-                        <div class="prompt-header">
-                            <strong>🤖 Agent Prompt:</strong>
-                            <button class="copy-btn"
-                                onclick="copyToClipboard(this.closest('.prompt-hint').querySelector('pre').innerText, this)">Copy
-                                Prompt</button>
-                        </div>
-                        <pre>Act as Frontend Specialist.
-In `client/src/App.jsx`, implement a Dashboard that:
-1. Has a "Start Mission" button that sends a POST request to `http://localhost:3000/tasks`.
-2. Displays the list of returned tasks (mocked or real).
-
-Commit with message 'feat: dashboard UI'.</pre>
+                        <button class="copy-btn"
+                            onclick="copyToClipboard(this.parentElement.querySelector('pre').innerText, this)">Copy</button>
+                        <strong>🤖 Prompt:</strong>
+                        <pre>Create a `server` directory with an Express app.
+Install `gray-matter` and `glob`.
+Create an endpoint GET /notes that:
+1. Scans all .md files in `../notes`
+2. Parses their frontmatter
+3. Returns an array of { id, title, content }.</pre>
                     </div>
                 </div>
             </div>
+
             <div class="verify-block">
                 <h4>🔍 Verify It Yourself:</h4>
-                <p>With Server, Worker, and Client all running: Click "Start Mission" on dashboard. Watch the Worker
-                    terminal for "Processing...".</p>
+                <p>Create a `notes/hello.md` file. Run `node server/index.js`. <br>Then `curl
+                    http://localhost:3000/notes`.</p>
             </div>
             <div class="step-bridge">
-                <span>✅ <strong>Accomplished:</strong> Full-Stack Integration Complete.</span>
-                <span>⚠️ <strong>Current State:</strong> The system works, but lacks production hardiness.</span>
-                <span>🚀 <strong>Next Objective:</strong> Security & Quality Assurance.</span>
+                <span>✅ <strong>Accomplished:</strong> Built the Markdown API.</span>
+                <span>⚠️ <strong>Current State:</strong> We have raw JSON data, but no UI to see it.</span>
+                <span>🚀 <strong>Next Objective:</strong> Visualize the Data (The Pivot).</span>
             </div>
+
+            <!-- Step 3 -->
+            <h3>Step 3: The Pivot (Refactor) 🔄</h3>
+            <div class="concept"><strong>Concept: Agentic Refactoring.</strong> Agents excel at changing code structure.
+                We will start with a boring List, then "Pivot" to a Graph.</div>
+
+            <div class="tab-container">
+                <div class="tab-header">
+                    <button class="tab-btn active" onclick="switchTab(this, 's3-manual')">My Hand</button>
+                    <button class="tab-btn" onclick="switchTab(this, 's3-agent')">AI Agent</button>
+                </div>
+                <div id="s3-manual" class="tab-content active">
+                    <p><strong>Part A: List View</strong><br>
+                        Create <code>App.jsx</code> that fetches <code>/notes</code> and renders a
+                        <code>&lt;ul&gt;</code> list.</p>
+                    <hr style="border-color:#334155; margin:15px 0;">
+                    <p><strong>Part B: The Pivot</strong><br>
+                        Install <code>npm install react-force-graph-2d</code> in client.<br>
+                        Rewrite <code>App.jsx</code> to render a <code>ForceGraph2D</code> instead of the list.</p>
+                </div>
+                <div id="s3-agent" class="tab-content">
+                    <div class="prompt-hint">
+                        <button class="copy-btn"
+                            onclick="copyToClipboard(this.parentElement.querySelector('pre').innerText, this)">Copy</button>
+                        <strong>🤖 Prompt (Part A):</strong>
+                        <pre>Fetch the notes from http://localhost:3000/notes and display them as a simple unordered list.</pre>
+
+                        <div style="margin-top:15px; border-top:1px dashed #475569; padding-top:10px;">
+                            <strong>🤖 Prompt (Part B - The Pivot):</strong>
+                            <pre>Refactor App.jsx.
+Instead of a list, visualize the notes using `react-force-graph-2d`.
+Nodes should be the note titles.
+Links should be derived from wikilinks [[Like This]] in the content.</pre>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="verify-block">
+                <h4>🔍 Verify It Yourself:</h4>
+                <p>Check `client/package.json` for `react-force-graph-2d`. Open `App.jsx` and see if `<ForceGraph` is
+                        present.</p>
+            </div>
+            <div class="step-bridge">
+                <span>✅ <strong>Accomplished:</strong> Pivoted to a Knowledge Graph.</span>
+                <span>⚠️ <strong>Current State:</strong> Level 1 Complete. The Foundation is Solid.</span>
+                <span>🚀 <strong>Next Objective:</strong> Level 2: Advanced Operations (Coming Soon).</span>
+            </div>
+
         </div>
 
         <h3>Verification Checklist</h3>
-        <ul class="task-list" id="phase3-list"></ul>
-        <button class="verify-btn" onclick="verifyAll(this)">📡 Verify Phase 3</button>
-    </div>
-
-    <!-- Phase 4 -->
-    <div class="phase-card">
-        <h2>Phase 4: The Verifier (Quality) <span style="font-size:0.6em; opacity:0.7; font-weight:normal">⏱️ 15m</span>
-        </h2>
-        <p><strong>Objective</strong>: Audit and Document.</p>
-        <div class="resources">
-            📚 Learn More:
-            <a href="https://docs.npmjs.com/cli/v8/commands/npm-audit" target="_blank" class="resource-link">npm
-                audit</a>
-            <a href="https://keepachangelog.com/en/1.0.0/" target="_blank" class="resource-link">Keep a Changelog</a>
-        </div>
-
-        <div class="phase-content">
-            <h3>Step 1: Security Audit</h3>
-            <div class="concept"><strong>Concept: Automated Vigilance.</strong> Agents can write insecure code. Using
-                tools like <code>npm audit</code> ensures we catch known vulnerabilities before deploying.</div>
-
-            <div class="tab-container">
-                <div class="tab-header">
-                    <button class="tab-btn active" onclick="switchTab(this, 'p4s1-manual')">My Hand (Manual)</button>
-                    <button class="tab-btn" onclick="switchTab(this, 'p4s1-agent')">AI Agent (Automated)</button>
-                </div>
-
-                <div id="p4s1-manual" class="tab-content active">
-                    <p>Run <code>npm audit</code> in `server/`. Create <code>SECURITY.md</code> noting any findings.</p>
-                </div>
-
-                <div id="p4s1-agent" class="tab-content">
-                    <div class="prompt-hint">
-                        <div class="prompt-header">
-                            <strong>🤖 Agent Prompt:</strong>
-                            <button class="copy-btn"
-                                onclick="copyToClipboard(this.closest('.prompt-hint').querySelector('pre').innerText, this)">Copy
-                                Prompt</button>
-                        </div>
-                        <pre>Run `npm audit` in the `server` directory.
-If any critical vulnerabilities are found, document them in a new file named `SECURITY.md`.
-If none are found, create `SECURITY.md` stating "No critical vulnerabilities found".</pre>
-                    </div>
-                </div>
-            </div>
-            <div class="verify-block">
-                <h4>🔍 Verify It Yourself:</h4>
-                <p>Check if <code>SECURITY.md</code> exists and contains the audit report.</p>
-            </div>
-            <div class="step-bridge">
-                <span>✅ <strong>Accomplished:</strong> Verified Security Standards.</span>
-                <span>⚠️ <strong>Current State:</strong> Code is safe, but changes are untracked.</span>
-                <span>🚀 <strong>Next Objective:</strong> Automate the Changelog.</span>
-            </div>
-
-            <h3>Step 2: Changelog</h3>
-            <div class="concept"><strong>Concept: Documentation as Code.</strong> Keeping a history helps both humans
-                and Agents understand how the project has evolved over time.</div>
-
-            <div class="tab-container">
-                <div class="tab-header">
-                    <button class="tab-btn active" onclick="switchTab(this, 'p4s2-manual')">My Hand (Manual)</button>
-                    <button class="tab-btn" onclick="switchTab(this, 'p4s2-agent')">AI Agent (Automated)</button>
-                </div>
-
-                <div id="p4s2-manual" class="tab-content active">
-                    <p>Create <code>CHANGELOG.md</code> and add an entry for "v0.1.0 - Initial Release".</p>
-                </div>
-
-                <div id="p4s2-agent" class="tab-content">
-                    <div class="prompt-hint">
-                        <div class="prompt-header">
-                            <strong>🤖 Agent Prompt:</strong>
-                            <button class="copy-btn"
-                                onclick="copyToClipboard(this.closest('.prompt-hint').querySelector('pre').innerText, this)">Copy
-                                Prompt</button>
-                        </div>
-                        <pre>Create a `CHANGELOG.md` file in the root.
-Add an initial entry for "v0.1.0 - Initial Release" utilizing the dates and changes from the git history.</pre>
-                    </div>
-                </div>
-            </div>
-            <div class="verify-block">
-                <h4>🔍 Verify It Yourself:</h4>
-                <p>Open <code>CHANGELOG.md</code> and verify "v0.1.0" is documented.</p>
-            </div>
-            <div class="step-bridge">
-                <span>✅ <strong>Accomplished:</strong> Documented Version History.</span>
-                <span>⚠️ <strong>Current State:</strong> Project Orbit is Feature Complete.</span>
-                <span>🚀 <strong>Next Objective:</strong> You are cleared for launch.</span>
-            </div>
-        </div>
-
-        <h3>Verification Checklist</h3>
-        <ul class="task-list" id="phase4-list"></ul>
-        <button class="verify-btn" onclick="verifyAll(this)">📡 Verify Phase 4</button>
+        <ul class="task-list" id="phase1-list"></ul>
+        <button class="verify-btn" onclick="verifyAll(this)">📡 Verify Phase 1</button>
     </div>
 
     <script>
-        async function verifyAll(btnElement = null) {
-            try {
-                let originalText = "";
-                if (btnElement) {
-                    originalText = btnElement.innerHTML;
-                    btnElement.innerHTML = "Scanning...";
-                    btnElement.disabled = true;
-                }
+        // Tab Logic
+        function switchTab(btn, tabId) {
+            const container = btn.closest('.tab-container');
+            container.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+            container.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+            container.querySelector('#' + tabId).classList.add('active');
+        }
 
+        // Copy Logic
+        async function copyToClipboard(text, btn) {
+            await navigator.clipboard.writeText(text);
+            const original = btn.innerText; btn.innerText = "Copied!";
+            setTimeout(() => btn.innerText = original, 2000);
+        }
+
+        // Verification Logic
+        async function verifyAll(btn) {
+            const original = btn.innerText;
+            btn.innerText = "Scanning...";
+            btn.disabled = true;
+
+            try {
                 const res = await fetch('/api/verify');
                 const data = await res.json();
+                renderList('phase1', data.phase1);
 
-                // Update specific phases logic
-                const p1 = renderPhase('phase1', data.phase1);
-                const p2 = renderPhase('phase2', data.phase2);
-                const p3 = renderPhase('phase3', data.phase3);
-                const p4 = renderPhase('phase4', data.phase4);
-
-                // Update Global Status
-                const total = 4;
-                const completed = [p1, p2, p3, p4].filter(Boolean).length;
-                document.getElementById('globalStatus').innerText = `${completed}/${total} Phases Completed`;
-                document.getElementById('globalStatus').style.color = completed === total ? 'var(--success)' : 'var(--accent)';
-
-                if (btnElement) {
-                    btnElement.innerHTML = originalText;
-                    // Flash success or done
-                    if ((btnElement.innerText.includes('1') && p1) ||
-                        (btnElement.innerText.includes('2') && p2) ||
-                        (btnElement.innerText.includes('3') && p3) ||
-                        (btnElement.innerText.includes('4') && p4)) {
-                        btnElement.innerText = "✅ Verified";
-                        setTimeout(() => btnElement.innerHTML = originalText, 2000);
-                    }
-                    btnElement.disabled = false;
+                // Determine completion
+                const p1Pass = data.phase1.every(i => i.passed);
+                if (p1Pass) {
+                    btn.innerText = "✅ Phase 1 Complete";
+                    btn.style.background = "var(--success)";
+                } else {
+                    btn.innerText = "⚠️ Issues Found";
+                    btn.style.background = "var(--warning)";
                 }
             } catch (e) {
                 console.error(e);
-                if (btnElement) {
-                    btnElement.disabled = false;
-                    btnElement.innerHTML = "❌ Connection Failed";
-                }
+                btn.innerText = "❌ Error Connecting";
+                btn.style.background = "var(--error)";
             }
+            setTimeout(() => {
+                if (!btn.innerText.includes('Complete')) {
+                    btn.innerText = original; btn.disabled = false; btn.style.background = "";
+                }
+            }, 3000);
         }
 
-        function renderPhase(id, items) {
-            const container = document.getElementById(`${id}-list`);
-            container.innerHTML = '';
-
-            let allPassed = true;
-
+        function renderList(id, items) {
+            const ul = document.getElementById(id + '-list');
+            ul.innerHTML = '';
             items.forEach(item => {
                 const li = document.createElement('li');
                 li.className = 'task-item';
-
-                const icon = document.createElement('div');
-                icon.className = `status-icon ${item.passed ? 'status-pass' : 'status-fail'}`;
-                icon.innerHTML = item.passed ? '✓' : '✗';
-
-                const text = document.createElement('span');
-                text.innerText = item.label;
-
-                li.appendChild(icon);
-                li.appendChild(text);
-                container.appendChild(li);
-
-                if (!item.passed) allPassed = false;
+                li.innerHTML = `
+                    <div class="status-icon ${item.passed ? 'status-pass' : 'status-fail'}">
+                        ${item.passed ? '✓' : '✗'}
+                    </div>
+                    <span>${item.label}</span>
+                `;
+                ul.appendChild(li);
             });
-            return allPassed;
         }
-
-        window.onload = () => verifyAll();
-
-        function switchTab(btn, tabId) {
-            // Find parent container
-            const container = btn.closest('.tab-container');
-
-            // Toggle buttons
-            container.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
-            btn.classList.add('active');
-
-            // Toggle content
-            container.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
-            container.querySelector(`#${tabId}`).classList.add('active');
-        }
-
-        async function copyToClipboard(text, btn) {
-            try {
-                await navigator.clipboard.writeText(text);
-                const original = btn.innerText;
-                btn.innerText = "Copied!";
-                setTimeout(() => btn.innerText = original, 2000);
-            } catch (err) {
-                console.error('Failed to copy', err);
-            }
-        }
-    </script>
-    <script type="module">
-        import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.esm.min.mjs';
-        mermaid.initialize({ startOnLoad: true, theme: 'dark' });
     </script>
 </body>
 

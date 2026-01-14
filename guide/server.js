@@ -15,22 +15,40 @@ function checkFileExists(relPath) {
 
 const CHECKS = {
     'phase1': [
-        { id: 'prd', label: 'PRD exists (PRD.md)', check: () => checkFileExists('PRD.md') },
-        { id: 'roles', label: 'Roles defined (.agent/active_context/roles.md)', check: () => checkFileExists('.agent/active_context/roles.md') }
+        {
+            id: 'shell',
+            label: 'React Shell (client/package.json)',
+            check: () => checkFileExists('client/package.json')
+        },
+        {
+            id: 'datalayer',
+            label: 'Data Layer (server/index.js)',
+            check: () => checkFileExists('server/index.js')
+        },
+        {
+            id: 'graphlib',
+            label: 'Graph Library Installed',
+            check: () => {
+                const pkgPath = path.join(ROOT_DIR, 'client/package.json');
+                if (!fs.existsSync(pkgPath)) return false;
+                try {
+                    const pkg = JSON.parse(fs.readFileSync(pkgPath, 'utf8'));
+                    return !!(pkg.dependencies && pkg.dependencies['react-force-graph-2d']);
+                } catch (e) { return false; }
+            }
+        },
+        {
+            id: 'pivot',
+            label: 'The Pivot (Graph in App.jsx)',
+            check: () => {
+                const appPath = path.join(ROOT_DIR, 'client/src/App.jsx');
+                if (!fs.existsSync(appPath)) return false;
+                const content = fs.readFileSync(appPath, 'utf8');
+                return content.includes('ForceGraph');
+            }
+        }
     ],
-    'phase2': [
-        { id: 'server_dir', label: 'Server directory exists', check: () => checkFileExists('server') },
-        { id: 'server_pkg', label: 'Server package.json', check: () => checkFileExists('server/package.json') },
-        { id: 'worker_js', label: 'Worker script (server/worker.js)', check: () => checkFileExists('server/worker.js') }
-    ],
-    'phase3': [
-        { id: 'client_dir', label: 'Client directory exists', check: () => checkFileExists('client') },
-        { id: 'client_pkg', label: 'Client package.json', check: () => checkFileExists('client/package.json') }
-    ],
-    'phase4': [
-        { id: 'security', label: 'Security Policy (server/SECURITY.md)', check: () => checkFileExists('server/SECURITY.md') },
-        { id: 'changelog', label: 'Changelog (CHANGELOG.md)', check: () => checkFileExists('CHANGELOG.md') }
-    ]
+    'phase2': []
 };
 
 const server = http.createServer((req, res) => {
