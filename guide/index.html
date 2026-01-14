@@ -222,6 +222,7 @@
     <!-- Architecture -->
     <div class="phase-card">
         <h2>🏗️ System Architecture</h2>
+        <p><strong>What is Orbit?</strong> It is a "System Control" app where users submit tasks (Research, Analysis) which are queued and processed asynchronously by worker agents.</p>
         <p>Before you build, visualize. This is what you will create:</p>
         <div class="mermaid">
             graph TD
@@ -262,9 +263,20 @@
             <p>Ensure you are in the workspace root. Run <code>git init</code> if you haven't already.</p>
 
             <h3>Step 2: Define Product (PRD)</h3>
-            <p>Create a file <code>PRD.md</code> in the root. Copy this content (or customize it):</p>
-            <div class="prompt-hint">🤖 <strong>Agent Prompt:</strong> "Create <code>PRD.md</code> with the content
-                (above). Commit with message 'docs: add initial PRD'."</div>
+            <p>Create a file <code>PRD.md</code> in the root.</p>
+            
+            <details open>
+                <summary>📄 <strong>Click to Copy PRD Content</strong></summary>
+                <pre style="user-select: all;"># Product Requirements Document: Orbit
+## Overview
+Orbit is a dashboard for visualizing long-running background tasks.
+## Features
+- **Task Submission**: POST /api/tasks (Type: Research, Analysis)
+- **Worker Queue**: Redis-backed queue for asynchronous processing.
+- **Real-time Status**: WebSocket updates for task progress.</pre>
+            </details>
+
+            <div class="prompt-hint">🤖 <strong>Agent Prompt:</strong> "Create <code>PRD.md</code> with this content: [PASTE CONTENT HERE]. Commit with message 'docs: add initial PRD'."</div>
 
             <h3>Step 3: Define Roles</h3>
             <p>Create a directory <code>.agent/active_context</code> and a file inside it named <code>roles.md</code>:
