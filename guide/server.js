@@ -7,7 +7,10 @@ const ROOT_DIR = path.resolve(__dirname, '..');
 
 // Verification Logic (Borrowed from verify_orbit.js)
 function checkFileExists(relPath) {
-    return fs.existsSync(path.join(ROOT_DIR, relPath));
+    const fullPath = path.join(ROOT_DIR, relPath);
+    const exists = fs.existsSync(fullPath);
+    console.log(`[VERIFY] Checking: ${fullPath} -> ${exists ? '✅' : '❌'}`);
+    return exists;
 }
 
 const CHECKS = {
