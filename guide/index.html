@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -12,7 +13,9 @@
             --accent: #38bdf8;
             --success: #22c55e;
             --error: #ef4444;
+            --code-bg: #334155;
         }
+
         body {
             font-family: 'Inter', system-ui, sans-serif;
             background-color: var(--bg);
@@ -22,34 +25,75 @@
             padding: 40px 20px;
             line-height: 1.6;
         }
-        h1, h2 { color: var(--accent); }
+
+        h1,
+        h2,
+        h3 {
+            color: var(--accent);
+            margin-top: 0;
+        }
+
         .hero {
             text-align: center;
-            margin-bottom: 50px;
+            margin-bottom: 40px;
             padding: 40px;
             background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
             border-radius: 12px;
             border: 1px solid #334155;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
         }
+
+        .status-summary {
+            background: rgba(0, 0, 0, 0.3);
+            padding: 15px;
+            border-radius: 8px;
+            margin-top: 20px;
+            display: inline-block;
+            border: 1px solid #475569;
+        }
+
+        .status-summary strong {
+            color: var(--accent);
+            font-size: 1.2em;
+        }
+
         .phase-card {
             background-color: var(--card);
             padding: 24px;
             border-radius: 12px;
             margin-bottom: 24px;
             border: 1px solid #334155;
+            position: relative;
         }
+
+        .phase-content {
+            margin-top: 20px;
+            padding-top: 20px;
+            border-top: 1px solid #334155;
+        }
+
         .task-list {
             list-style: none;
             padding: 0;
+            margin-top: 20px;
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: 8px;
+            padding: 10px;
         }
+
         .task-item {
             display: flex;
             align-items: center;
-            margin-bottom: 12px;
+            margin-bottom: 8px;
             padding: 12px;
             background: #0f172a;
             border-radius: 8px;
         }
+
+        .task-item:last-child {
+            margin-bottom: 0;
+        }
+
         .status-icon {
             width: 24px;
             height: 24px;
@@ -59,109 +103,319 @@
             align-items: center;
             justify-content: center;
             font-weight: bold;
+            flex-shrink: 0;
         }
-        .status-pending { background: #334155; color: #94a3b8; }
-        .status-pass { background: rgba(34, 197, 94, 0.2); color: var(--success); border: 1px solid var(--success); }
-        .status-fail { background: rgba(239, 68, 68, 0.2); color: var(--error); border: 1px solid var(--error); }
-        
-        button {
+
+        .status-pending {
+            background: #334155;
+            color: #94a3b8;
+        }
+
+        .status-pass {
+            background: rgba(34, 197, 94, 0.2);
+            color: var(--success);
+            border: 1px solid var(--success);
+        }
+
+        .status-fail {
+            background: rgba(239, 68, 68, 0.2);
+            color: var(--error);
+            border: 1px solid var(--error);
+        }
+
+        .verify-btn {
             background: var(--accent);
-            color: #000;
+            color: #0f172a;
             border: none;
-            padding: 12px 24px;
-            font-size: 16px;
+            padding: 10px 20px;
+            font-size: 14px;
             font-weight: bold;
             border-radius: 6px;
             cursor: pointer;
-            transition: opacity 0.2s;
+            transition: all 0.2s;
+            margin-top: 10px;
+            width: 100%;
         }
-        button:hover { opacity: 0.9; }
+
+        .verify-btn:hover {
+            opacity: 0.9;
+            transform: translateY(-1px);
+        }
+
+        .verify-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        pre {
+            background: var(--code-bg);
+            padding: 15px;
+            border-radius: 6px;
+            overflow-x: auto;
+            border: 1px solid #475569;
+        }
+
         code {
-            background: #334155;
-            padding: 2px 6px;
-            border-radius: 4px;
             font-family: monospace;
             color: #fca5a5;
         }
-        .hidden { display: none; }
+
+        details {
+            background: #0f172a;
+            padding: 10px;
+            border-radius: 6px;
+            margin: 10px 0;
+            cursor: pointer;
+        }
+
+        summary {
+            font-weight: bold;
+            color: var(--accent);
+        }
+
+        .prompt-hint {
+            background: linear-gradient(90deg, rgba(56, 189, 248, 0.1) 0%, rgba(56, 189, 248, 0) 100%);
+            border-left: 3px solid var(--accent);
+            padding: 10px 15px;
+            margin: 10px 0;
+            font-size: 0.9em;
+            color: #bae6fd;
+            border-radius: 0 4px 4px 0;
+        }
     </style>
 </head>
+
 <body>
 
     <div class="hero">
         <h1>🚀 Project Orbit: Mission Control</h1>
-        <p>Welcome, Agent. Your mission is to build the ultimate AI Task Orchestrator.</p>
-        <p>Use this dashboard to track your progress as you master the Antigravity IDE.</p>
-        <br>
-        <button onclick="verifyAll()">📡 Scan Project Status</button>
+        <p><strong>The Objective:</strong> Master Structured Agentic Engineering.</p>
+        <p>You are about to build <em>Orbit</em>, an AI Task Orchestration Platform. <br>
+            The true goal is to experience a <strong>Structured AI Workflow</strong>: defining Roles, writing PRDs, and
+            using Verification Loops to build complex software systematically.</p>
+
+        <div class="status-summary">
+            Current Status: <strong id="globalStatus">Initializing...</strong>
+        </div>
     </div>
 
+    <!-- Architecture -->
     <div class="phase-card">
-        <h2>Phase 1: The Architect</h2>
-        <p>Define the system requirements and agent roles.</p>
+        <h2>🏗️ System Architecture</h2>
+        <p>Before you build, visualize. This is what you will create:</p>
+        <div class="mermaid">
+            graph TD
+            subgraph "Frontend"
+            Dashboard[React Dashboard]
+            WS_Client[WebSocket Client]
+            end
+
+            subgraph "Backend"
+            API[Express API]
+            Worker[Worker Process]
+            end
+
+            Dashboard -->|POST /tasks| API
+            API -->|Queue| Redis[(Redis)]
+            Worker -->|Process| Redis
+            Redis -->|Updates| API
+            API -->|WS Push| WS_Client
+        </div>
+    </div>
+
+    <!-- Phase 1 -->
+    <div class="phase-card">
+        <h2>Phase 1: The Architect (Planning)</h2>
+        <p><strong>Objective</strong>: Define the system before writing code. This teaches you how Antigravity uses
+            context files.</p>
+
+        <div class="phase-content">
+            <h3>Step 1: Initialize</h3>
+            <p>Ensure you are in the workspace root. Run <code>git init</code> if you haven't already.</p>
+
+            <h3>Step 2: Define Product (PRD)</h3>
+            <p>Create a file <code>PRD.md</code> in the root. Copy this content (or customize it):</p>
+            <details>
+                <summary>Click to view PRD Content</summary>
+                <pre># Product Requirements Document: Orbit
+## Overview
+Orbit is a dashboard for visualizing long-running background tasks.
+## Features
+- **Task Submission**: POST /api/tasks (Type: Research, Analysis)
+- **Worker Queue**: Redis-backed queue for asynchronous processing.
+- **Real-time Status**: WebSocket updates for task progress.</pre>
+            </details>
+
+            <h3>Step 3: Define Roles</h3>
+            <p>Create a directory <code>.agent/active_context</code> and a file inside it named <code>roles.md</code>:
+            </p>
+            <pre># Roles
+- **Architect**: Responsible for system design and PRDs.
+- **Frontend Specialist**: Focus on React, Tailwind, and UX.
+- **Backend Engineer**: Focus on Node.js, Redis, and APIs.</pre>
+        </div>
+
+        <h3>Verification Checklist</h3>
         <ul class="task-list" id="phase1-list"></ul>
+        <button class="verify-btn" onclick="verifyAll(this)">📡 Verify Phase 1</button>
     </div>
 
+    <!-- Phase 2 -->
     <div class="phase-card">
-        <h2>Phase 2: The Engineer</h2>
-        <p>Build the Backend API and Worker Service.</p>
+        <h2>Phase 2: The Engineer (Backend Setup)</h2>
+        <p><strong>Objective</strong>: Build a robust backend with a worker queue.</p>
+
+        <div class="phase-content">
+            <h3>Step 1: Scaffold Server</h3>
+            <p>Create a <code>server</code> folder. Inside it, run <code>npm init -y</code> and install dependencies:
+            </p>
+            <pre>npm install express redis bullmq cors ws</pre>
+            <div class="prompt-hint">🤖 <strong>Agent Prompt:</strong> "Create a `server` directory. Inside it,
+                initialize a Node project and install express, bullmq, cors, and ws."</div>
+            <p><em>Optimization (M1/8GB)</em>: Use native Redis (<code>brew install redis</code>) instead of Docker.</p>
+
+            <h3>Step 2: Create API</h3>
+            <p>Create <code>server/index.js</code>. Build an Express app with a POST <code>/tasks</code> endpoint that
+                adds jobs to a BullMQ queue named <code>orbit-tasks</code>.</p>
+            <div class="prompt-hint">🤖 <strong>Agent Prompt:</strong> "Act as Backend Engineer. Read @PRD.md and
+                @roles.md. Create `server/index.js` with a basic Express app. Add a POST /tasks endpoint that pushes to
+                a BullMQ queue 'orbit-tasks'."</div>
+
+            <h3>Step 3: Create Worker</h3>
+            <p>Create <code>server/worker.js</code>. Process jobs from <code>orbit-tasks</code>. Simulate work by
+                sleeping for 5 seconds.</p>
+            <div class="prompt-hint">🤖 <strong>Agent Prompt:</strong> "Create `server/worker.js` that uses BullMQ to
+                process 'orbit-tasks'. Simulate work with a 5s delay."</div>
+        </div>
+
+        <h3>Verification Checklist</h3>
         <ul class="task-list" id="phase2-list"></ul>
+        <button class="verify-btn" onclick="verifyAll(this)">📡 Verify Phase 2</button>
     </div>
 
+    <!-- Phase 3 -->
     <div class="phase-card">
-        <h2>Phase 3: The Frontend Specialist</h2>
-        <p>Create the React Dashboard.</p>
+        <h2>Phase 3: The Frontend Specialist (Dashboard)</h2>
+        <p><strong>Objective</strong>: Visualize the state.</p>
+
+        <div class="phase-content">
+            <h3>Step 1: Scaffold Client</h3>
+            <p>In the root, create a Vite app:</p>
+            <pre>npm create vite@latest client -- --template react
+cd client && npm install</pre>
+            <div class="prompt-hint">🤖 <strong>Agent Prompt:</strong> "Create a new Vite React app named 'client' in
+                the root."</div>
+
+            <h3>Step 2: Connect to API</h3>
+            <p>Create a "Start Mission" button (calls POST <code>http://localhost:3000/tasks</code>) and list active
+                tasks.</p>
+            <div class="prompt-hint">🤖 <strong>Agent Prompt:</strong> "Act as Frontend Specialist. In
+                `client/src/App.jsx`, create a 'Start Mission' button that calls POST http://localhost:3000/tasks.
+                Display the list of jobs."</div>
+        </div>
+
+        <h3>Verification Checklist</h3>
         <ul class="task-list" id="phase3-list"></ul>
+        <button class="verify-btn" onclick="verifyAll(this)">📡 Verify Phase 3</button>
     </div>
 
+    <!-- Phase 4 -->
     <div class="phase-card">
-        <h2>Phase 4: Security & Quality</h2>
-        <p>Audit and Document.</p>
+        <h2>Phase 4: The Verifier (Quality)</h2>
+        <p><strong>Objective</strong>: Audit and Document.</p>
+
+        <div class="phase-content">
+            <h3>Step 1: Security Audit</h3>
+            <p>Run <code>npm audit</code> in `server/`. Create <code>SECURITY.md</code> noting any findings.</p>
+
+            <h3>Step 2: Changelog</h3>
+            <p>Create <code>CHANGELOG.md</code> and add an entry for "v0.1.0 - Initial Release".</p>
+        </div>
+
+        <h3>Verification Checklist</h3>
         <ul class="task-list" id="phase4-list"></ul>
+        <button class="verify-btn" onclick="verifyAll(this)">📡 Verify Phase 4</button>
     </div>
 
     <script>
-        async function verifyAll() {
+        async function verifyAll(btnElement = null) {
             try {
+                let originalText = "";
+                if (btnElement) {
+                    originalText = btnElement.innerHTML;
+                    btnElement.innerHTML = "Scanning...";
+                    btnElement.disabled = true;
+                }
+
                 const res = await fetch('/api/verify');
                 const data = await res.json();
-                
-                renderPhase('phase1', data.phase1);
-                renderPhase('phase2', data.phase2);
-                renderPhase('phase3', data.phase3);
-                renderPhase('phase4', data.phase4);
+
+                // Update specific phases logic
+                const p1 = renderPhase('phase1', data.phase1);
+                const p2 = renderPhase('phase2', data.phase2);
+                const p3 = renderPhase('phase3', data.phase3);
+                const p4 = renderPhase('phase4', data.phase4);
+
+                // Update Global Status
+                const total = 4;
+                const completed = [p1, p2, p3, p4].filter(Boolean).length;
+                document.getElementById('globalStatus').innerText = `${completed}/${total} Phases Completed`;
+                document.getElementById('globalStatus').style.color = completed === total ? 'var(--success)' : 'var(--accent)';
+
+                if (btnElement) {
+                    btnElement.innerHTML = originalText;
+                    // Flash success or done
+                    if ((btnElement.innerText.includes('1') && p1) ||
+                        (btnElement.innerText.includes('2') && p2) ||
+                        (btnElement.innerText.includes('3') && p3) ||
+                        (btnElement.innerText.includes('4') && p4)) {
+                        btnElement.innerText = "✅ Verified";
+                        setTimeout(() => btnElement.innerHTML = originalText, 2000);
+                    }
+                    btnElement.disabled = false;
+                }
             } catch (e) {
-                alert("Could not connect to Mission Control. Make sure 'node guide/server.js' is running!");
+                console.error(e);
+                if (btnElement) {
+                    btnElement.disabled = false;
+                    btnElement.innerHTML = "❌ Connection Failed";
+                }
             }
         }
 
         function renderPhase(id, items) {
             const container = document.getElementById(`${id}-list`);
             container.innerHTML = '';
-            
+
             let allPassed = true;
 
             items.forEach(item => {
                 const li = document.createElement('li');
                 li.className = 'task-item';
-                
+
                 const icon = document.createElement('div');
                 icon.className = `status-icon ${item.passed ? 'status-pass' : 'status-fail'}`;
                 icon.innerHTML = item.passed ? '✓' : '✗';
-                
+
                 const text = document.createElement('span');
                 text.innerText = item.label;
-                
+
                 li.appendChild(icon);
                 li.appendChild(text);
                 container.appendChild(li);
 
                 if (!item.passed) allPassed = false;
             });
+            return allPassed;
         }
 
-        // Initial render (placeholders)
-        window.onload = verifyAll;
+        window.onload = () => verifyAll();
+    </script>
+    <script type="module">
+        import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.esm.min.mjs';
+        mermaid.initialize({ startOnLoad: true, theme: 'dark' });
     </script>
 </body>
+
 </html>
