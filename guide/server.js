@@ -25,7 +25,7 @@ const CHECKS = {
         { id: 'client_pkg', label: 'Client package.json', check: () => checkFileExists('client/package.json') }
     ],
     'phase4': [
-        { id: 'security', label: 'Security Policy (SECURITY.md)', check: () => checkFileExists('SECURITY.md') },
+        { id: 'security', label: 'Security Policy (server/SECURITY.md)', check: () => checkFileExists('server/SECURITY.md') },
         { id: 'changelog', label: 'Changelog (CHANGELOG.md)', check: () => checkFileExists('CHANGELOG.md') }
     ]
 };
