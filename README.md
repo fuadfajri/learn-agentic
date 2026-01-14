@@ -8,7 +8,7 @@ This repository is a structured training ground for **Agentic Engineering** (Wor
 ## 📂 Project Structure
 This repository is organized to support a multi-device, professional workflow:
 
-*   **`orbit_app/`**: The Application Source Code.
+*   **`cosmos_app/`**: The Application Source Code.
     *   `client/`: React + Vite Frontend (Force Graph).
     *   `server/`: Node.js Backend (Markdown Parser).
     *   `notes/`: The raw data for your graph.

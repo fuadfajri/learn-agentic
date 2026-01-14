@@ -1,0 +1,5 @@
+---
+tags: [Cooking]
+---
+
+Standard note about [[NodeJS]].

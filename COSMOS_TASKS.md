@@ -1,7 +1,7 @@
 # Tasks: Project Cosmos Guide Development 🌌
 
 **Goal**: Build the "Mission Control" Guide, Verification Logic, and Curriculum.
-**Note**: `orbit_app/` serves only as a **Test Fixture** to validate the guide's verification logic.
+**Note**: `cosmos_app/` serves only as a **Test Fixture** to validate the guide's verification logic.
 
 ## Phase 0: Transition
 - [x] Archive "Project Orbit" (Move to `guide/orbit_legacy.html`) <!-- id: 0 -->
