@@ -183,6 +183,24 @@
             color: #bae6fd;
             border-radius: 0 4px 4px 0;
         }
+
+        .resources {
+            margin-top: 10px;
+            font-size: 0.85em;
+        }
+
+        .resource-link {
+            color: #94a3b8;
+            margin-right: 15px;
+            text-decoration: none;
+            border-bottom: 1px dotted #94a3b8;
+            transition: color 0.2s;
+        }
+
+        .resource-link:hover {
+            color: var(--accent);
+            border-bottom-color: var(--accent);
+        }
     </style>
 </head>
 
@@ -194,6 +212,7 @@
         <p>You are about to build <em>Orbit</em>, an AI Task Orchestration Platform. <br>
             The true goal is to experience a <strong>Structured AI Workflow</strong>: defining Roles, writing PRDs, and
             using Verification Loops to build complex software systematically.</p>
+        <p style="color: #94a3b8; font-size: 0.9em;">⏱️ <strong>Estimated Total Time:</strong> ~2 Hours</p>
 
         <div class="status-summary">
             Current Status: <strong id="globalStatus">Initializing...</strong>
@@ -226,9 +245,17 @@
 
     <!-- Phase 1 -->
     <div class="phase-card">
-        <h2>Phase 1: The Architect (Planning)</h2>
+        <h2>Phase 1: The Architect (Planning) <span style="font-size:0.6em; opacity:0.7; font-weight:normal">⏱️
+                15m</span></h2>
         <p><strong>Objective</strong>: Define the system before writing code. This teaches you how Antigravity uses
             context files.</p>
+        <div class="resources">
+            📚 Learn More:
+            <a href="https://www.atlassian.com/agile/product-management/product-requirements" target="_blank"
+                class="resource-link">What is a PRD?</a>
+            <a href="https://www.markdownguide.org/basic-syntax/" target="_blank" class="resource-link">Markdown
+                Syntax</a>
+        </div>
 
         <div class="phase-content">
             <h3>Step 1: Initialize</h3>
@@ -236,16 +263,8 @@
 
             <h3>Step 2: Define Product (PRD)</h3>
             <p>Create a file <code>PRD.md</code> in the root. Copy this content (or customize it):</p>
-            <details>
-                <summary>Click to view PRD Content</summary>
-                <pre># Product Requirements Document: Orbit
-## Overview
-Orbit is a dashboard for visualizing long-running background tasks.
-## Features
-- **Task Submission**: POST /api/tasks (Type: Research, Analysis)
-- **Worker Queue**: Redis-backed queue for asynchronous processing.
-- **Real-time Status**: WebSocket updates for task progress.</pre>
-            </details>
+            <div class="prompt-hint">🤖 <strong>Agent Prompt:</strong> "Create <code>PRD.md</code> with the content
+                (above). Commit with message 'docs: add initial PRD'."</div>
 
             <h3>Step 3: Define Roles</h3>
             <p>Create a directory <code>.agent/active_context</code> and a file inside it named <code>roles.md</code>:
@@ -254,6 +273,8 @@ Orbit is a dashboard for visualizing long-running background tasks.
 - **Architect**: Responsible for system design and PRDs.
 - **Frontend Specialist**: Focus on React, Tailwind, and UX.
 - **Backend Engineer**: Focus on Node.js, Redis, and APIs.</pre>
+            <div class="prompt-hint">🤖 <strong>Agent Prompt:</strong> "Create `.agent/active_context/roles.md` with the
+                content (above). Commit with message 'docs: define agent roles'."</div>
         </div>
 
         <h3>Verification Checklist</h3>
@@ -263,30 +284,42 @@ Orbit is a dashboard for visualizing long-running background tasks.
 
     <!-- Phase 2 -->
     <div class="phase-card">
-        <h2>Phase 2: The Engineer (Backend Setup)</h2>
+        <h2>Phase 2: The Engineer (Backend Setup) <span style="font-size:0.6em; opacity:0.7; font-weight:normal">⏱️
+                45m</span></h2>
         <p><strong>Objective</strong>: Build a robust backend with a worker queue.</p>
+        <div class="resources">
+            📚 Learn More:
+            <a href="https://expressjs.com/" target="_blank" class="resource-link">Express</a>
+            <a href="https://docs.bullmq.io/" target="_blank" class="resource-link">BullMQ Guide</a>
+            <a href="https://redis.io/docs/about/" target="_blank" class="resource-link">Redis Crash Course</a>
+        </div>
 
         <div class="phase-content">
             <h3>Step 1: Scaffold Server</h3>
             <p>Create a <code>server</code> folder. Inside it, run <code>npm init -y</code> and install dependencies:
             </p>
             <pre>npm install express redis bullmq cors ws</pre>
-            <div class="prompt-hint">🤖 <strong>Agent Prompt:</strong> "Create a `server` directory. Inside it,
-                initialize a Node project and install express, bullmq, cors, and ws."</div>
+            <div class="prompt-hint">
+                <span
+                    style="background:#f59e0b; color:#000; padding:2px 6px; border-radius:4px; font-size:0.8em; margin-right:5px; font-weight:bold;">⏳
+                    Long Task</span>
+                🤖 <strong>Agent Prompt:</strong> "Create a `server` directory. Initialize Node, install express,
+                bullmq, cors, ws. Commit with message 'chore: init server'."
+            </div>
             <p><em>Optimization (M1/8GB)</em>: Use native Redis (<code>brew install redis</code>) instead of Docker.</p>
 
             <h3>Step 2: Create API</h3>
             <p>Create <code>server/index.js</code>. Build an Express app with a POST <code>/tasks</code> endpoint that
                 adds jobs to a BullMQ queue named <code>orbit-tasks</code>.</p>
-            <div class="prompt-hint">🤖 <strong>Agent Prompt:</strong> "Act as Backend Engineer. Read @PRD.md and
-                @roles.md. Create `server/index.js` with a basic Express app. Add a POST /tasks endpoint that pushes to
-                a BullMQ queue 'orbit-tasks'."</div>
+            <div class="prompt-hint">🤖 <strong>Agent Prompt:</strong> "Act as Backend Engineer. Read @PRD.md. Create
+                `server/index.js` with Express and a POST /tasks endpoint (push to 'orbit-tasks' queue). Commit: 'feat:
+                add task api'."</div>
 
             <h3>Step 3: Create Worker</h3>
             <p>Create <code>server/worker.js</code>. Process jobs from <code>orbit-tasks</code>. Simulate work by
                 sleeping for 5 seconds.</p>
-            <div class="prompt-hint">🤖 <strong>Agent Prompt:</strong> "Create `server/worker.js` that uses BullMQ to
-                process 'orbit-tasks'. Simulate work with a 5s delay."</div>
+            <div class="prompt-hint">🤖 <strong>Agent Prompt:</strong> "Create `server/worker.js` to process
+                'orbit-tasks' with BullMQ (simulate 5s work). Commit: 'feat: add worker'."</div>
         </div>
 
         <h3>Verification Checklist</h3>
@@ -296,23 +329,34 @@ Orbit is a dashboard for visualizing long-running background tasks.
 
     <!-- Phase 3 -->
     <div class="phase-card">
-        <h2>Phase 3: The Frontend Specialist (Dashboard)</h2>
+        <h2>Phase 3: The Frontend Specialist (Dashboard) <span
+                style="font-size:0.6em; opacity:0.7; font-weight:normal">⏱️ 30m</span></h2>
         <p><strong>Objective</strong>: Visualize the state.</p>
+        <div class="resources">
+            📚 Learn More:
+            <a href="https://vitejs.dev/guide/" target="_blank" class="resource-link">Vite</a>
+            <a href="https://react.dev/learn" target="_blank" class="resource-link">React Quick Start</a>
+        </div>
 
         <div class="phase-content">
             <h3>Step 1: Scaffold Client</h3>
             <p>In the root, create a Vite app:</p>
             <pre>npm create vite@latest client -- --template react
 cd client && npm install</pre>
-            <div class="prompt-hint">🤖 <strong>Agent Prompt:</strong> "Create a new Vite React app named 'client' in
-                the root."</div>
+            <div class="prompt-hint">
+                <span
+                    style="background:#f59e0b; color:#000; padding:2px 6px; border-radius:4px; font-size:0.8em; margin-right:5px; font-weight:bold;">⏳
+                    Long Task</span>
+                🤖 <strong>Agent Prompt:</strong> "Create a Vite React app named 'client'. Install dependencies. Commit:
+                'chore: init frontend'."
+            </div>
 
             <h3>Step 2: Connect to API</h3>
             <p>Create a "Start Mission" button (calls POST <code>http://localhost:3000/tasks</code>) and list active
                 tasks.</p>
             <div class="prompt-hint">🤖 <strong>Agent Prompt:</strong> "Act as Frontend Specialist. In
-                `client/src/App.jsx`, create a 'Start Mission' button that calls POST http://localhost:3000/tasks.
-                Display the list of jobs."</div>
+                `client/src/App.jsx`, add a 'Start Mission' button calling POST /tasks. Display job list. Commit: 'feat:
+                dashboard UI'."</div>
         </div>
 
         <h3>Verification Checklist</h3>
@@ -322,8 +366,15 @@ cd client && npm install</pre>
 
     <!-- Phase 4 -->
     <div class="phase-card">
-        <h2>Phase 4: The Verifier (Quality)</h2>
+        <h2>Phase 4: The Verifier (Quality) <span style="font-size:0.6em; opacity:0.7; font-weight:normal">⏱️ 15m</span>
+        </h2>
         <p><strong>Objective</strong>: Audit and Document.</p>
+        <div class="resources">
+            📚 Learn More:
+            <a href="https://docs.npmjs.com/cli/v8/commands/npm-audit" target="_blank" class="resource-link">npm
+                audit</a>
+            <a href="https://keepachangelog.com/en/1.0.0/" target="_blank" class="resource-link">Keep a Changelog</a>
+        </div>
 
         <div class="phase-content">
             <h3>Step 1: Security Audit</h3>

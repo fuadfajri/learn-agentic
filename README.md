@@ -3,8 +3,9 @@
 Welcome to **Project Orbit**. This repository is your training ground to experience **Structured Agentic Engineering**.
 
 **The Mission**: Build a production-ready **AI Task Orchestration Platform** (Orbit) using React, Node.js, and Redis.
+**Time Commitment**: ~2 Hours ⏱️
 
-**The Real Goal**: Learn how to use **AI Agents**, **Context Files**, and **Verification Loops** to build complex software systematically, not just how to use an IDE.
+**The Real Goal**: Learn **Atomic Git Workflows**, **Context Management**, and **Verification Loops** to build complex software systematically.
 
 ## 🚀 How to Start
 
